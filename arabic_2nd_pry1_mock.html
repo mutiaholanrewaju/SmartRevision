@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Arabic Mock Exam - Primary 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .arabic {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+            font-size: 1.75rem;
+        }
+        .exam-sheet {
+            background: white;
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            border-radius: 0.5rem;
+        }
+        .option-btn {
+            transition: all 0.2s;
+            border: 2px solid #e5e7eb;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+        }
+        .option-btn:hover {
+            background-color: #f9fafb;
+            border-color: #3b82f6;
+        }
+        .option-btn.selected {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+            font-weight: 600;
+        }
+        .correct {
+            background-color: #d1fae5 !important;
+            border-color: #10b981 !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+        }
+        input[type="text"] {
+            border-bottom: 2px solid #9ca3af;
+            outline: none;
+            text-align: center;
+            padding: 2px 5px;
+        }
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+        }
+        @media print {
+            .no-print { display: none; }
+            .exam-sheet { box-shadow: none; margin: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="max-w-4xl mx-auto px-4 py-6 no-print">
+    <div class="bg-indigo-600 p-6 rounded-xl shadow-lg text-white mb-6">
+        <h2 class="text-xl font-bold mb-1">Interactive Arabic Mock Exam 📝</h2>
+        <p class="opacity-90 text-sm">This is an interactive version. He can select answers, type in blanks, and click "Submit" at the bottom to see his score.</p>
+        <div class="mt-4 flex gap-3">
+            <button onclick="window.print()" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100">Print Paper Version</button>
+            <button onclick="resetExam()" class="bg-indigo-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-indigo-400">Reset Exam</button>
+        </div>
+    </div>
+</div>
+
+<div class="exam-sheet" id="examContent">
+    <!-- Header -->
+    <div class="text-center border-b-4 border-double border-gray-800 pb-4 mb-6">
+        <h1 class="text-2xl font-bold uppercase tracking-tight">Second Term Examination 2026</h1>
+        <h2 class="text-lg font-semibold text-indigo-800">Subject: Arabic Language (Al-Arabiya)</h2>
+        <div class="flex justify-between mt-4 text-sm font-bold uppercase text-gray-600">
+            <span>Class: Primary 1</span>
+            <span>Time: 1 Hour</span>
+        </div>
+    </div>
+
+    <!-- Student Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-gray-50 p-4 rounded-lg">
+        <div>
+            <label class="block text-xs font-bold text-gray-500 uppercase">Student Name</label>
+            <input type="text" placeholder="Type name here..." class="w-full bg-transparent text-lg font-semibold border-none focus:ring-0">
+        </div>
+        <div class="text-right">
+            <div id="scoreDisplay" class="hidden text-2xl font-black text-indigo-600">
+                Score: <span id="finalScore">0</span> / 100
+            </div>
+        </div>
+    </div>
+
+    <!-- Section A -->
+    <div class="mb-12">
+        <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-sm mb-4">SECTION A: OBJECTIVES (50 MARKS)</div>
+        <p class="italic text-gray-500 text-sm mb-6 border-b pb-2">Click on the correct bubble for each question.</p>
+        
+        <div class="space-y-8" id="objectives">
+            <!-- Q1 -->
+            <div class="question-block" data-correct="b">
+                <p class="font-bold mb-3">1. How do you say <span class="arabic">إِ نِ</span> in English letters?</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Bini</button>
+                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Ini</button>
+                    <button class="option-btn" onclick="selectOption(this, 'c')">(c) Jidi</button>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-block" data-correct="a">
+                <p class="font-bold mb-3">2. Which letter sounds like <span class="arabic text-2xl">ت</span> (Ta)?</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) <span class="arabic text-xl">ط</span> (Taw)</button>
+                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) <span class="arabic text-xl">ق</span> (Qaf)</button>
+                    <button class="option-btn" onclick="selectOption(this, 'c')">(c) <span class="arabic text-xl">د</span> (Dal)</button>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-block" data-correct="c">
+                <p class="font-bold mb-3">3. What is the English for <span class="arabic text-2xl">مِمْحاة</span> (Mamhat)?</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Pen</button>
+                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Ruler</button>
+                    <button class="option-btn" onclick="selectOption(this, 'c')">(c) Eraser</button>
+                </div>
+            </li>
+
+            <!-- Q4 -->
+            <div class="question-block" data-correct="b">
+                <p class="font-bold mb-3">4. What is the meaning of "Aghliqul baba" (<span class="arabic text-xl">أَغْلِقُ البَاب</span>)?</p>
+                <div class="grid grid-cols-1 gap-2">
+                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) I am opening the window</button>
+                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) I am closing the door</button>
+                    <button class="option-btn" onclick="selectOption(this, 'c')">(c) I am washing the car</button>
+                </div>
+            </li>
+
+            <!-- Q5 -->
+            <div class="question-block" data-correct="b">
+                <p class="font-bold mb-3">5. Which bird is <span class="arabic text-2xl">دَجَاجَة</span> (Dajajatun)?</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Pigeon</button>
+                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Hen</button>
+                    <button class="option-btn" onclick="selectOption(this, 'c')">(c) Duck</button>
+                </div>
+            </li>
+        </div>
+    </div>
+
+    <!-- Section B -->
+    <div class="mb-12">
+        <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-sm mb-4 uppercase">Section B: Written (40 Marks)</div>
+        
+        <!-- Numbers -->
+        <div class="mb-10 bg-blue-50 p-6 rounded-xl border border-blue-100">
+            <p class="font-bold mb-4">1. Fill in the missing numbers (Arabic Numerals):</p>
+            <div class="flex items-center justify-center gap-4 arabic">
+                <span>١</span>
+                <input type="text" class="w-12 bg-white rounded border border-blue-200" id="num1" data-answer="٢">
+                <span>٣</span>
+                <input type="text" class="w-12 bg-white rounded border border-blue-200" id="num2" data-answer="٤">
+                <span>٥</span>
+            </div>
+            <div class="flex items-center justify-center gap-4 arabic mt-6">
+                <span>١١</span>
+                <input type="text" class="w-12 bg-white rounded border border-blue-200" id="num3" data-answer="١٢">
+                <span>١٣</span>
+                <input type="text" class="w-12 bg-white rounded border border-blue-200" id="num4" data-answer="١٤">
+                <span>١٥</span>
+            </div>
+        </div>
+
+        <!-- Arithmetic -->
+        <div class="mb-10">
+            <p class="font-bold mb-4 text-center">2. Simple Arithmetic (Write the answer in Arabic):</p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white border-2 border-dashed border-gray-300 p-4 rounded-lg flex items-center justify-center">
+                    <span class="arabic ml-2 font-bold">٣ + ٥ = </span>
+                    <input type="text" class="arabic w-16" id="calc1" data-answer="٨">
+                </div>
+                <div class="bg-white border-2 border-dashed border-gray-300 p-4 rounded-lg flex items-center justify-center">
+                    <span class="arabic ml-2 font-bold">٤ + ٢ = </span>
+                    <input type="text" class="arabic w-16" id="calc2" data-answer="٦">
+                </div>
+            </div>
+        </div>
+
+        <!-- Translation -->
+        <div>
+            <p class="font-bold mb-4">3. Type the English meaning:</p>
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="font-semibold text-gray-700 min-w-[120px]">Daftar:</span>
+                    <input type="text" class="flex-grow border-b-2" id="trans1" data-answer="notebook">
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="font-semibold text-gray-700 min-w-[120px]">Mistarah:</span>
+                    <input type="text" class="flex-grow border-b-2" id="trans2" data-answer="ruler">
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="font-semibold text-gray-700 min-w-[120px]">Tawusun:</span>
+                    <input type="text" class="flex-grow border-b-2" id="trans3" data-answer="peacock">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section C -->
+    <div class="mb-12 border-2 border-indigo-100 bg-indigo-50 p-6 rounded-2xl">
+        <h3 class="font-bold text-indigo-900 mb-2 uppercase">Section C: Oral Practical (10 Marks)</h3>
+        <p class="text-sm text-indigo-700 mb-4">Parent: Tap the speaker icons to hear the word (simulated) or just have him read them aloud.</p>
+        <div class="grid grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl text-center shadow-sm hover:shadow-md transition">
+                <div class="arabic text-3xl mb-1">تِ لِ</div>
+                <div class="text-xs font-bold text-gray-400 uppercase">Tili</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl text-center shadow-sm hover:shadow-md transition">
+                <div class="arabic text-3xl mb-1">ثِ نِ</div>
+                <div class="text-xs font-bold text-gray-400 uppercase">Thini</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl text-center shadow-sm hover:shadow-md transition">
+                <div class="arabic text-3xl mb-1">جِ دِ</div>
+                <div class="text-xs font-bold text-gray-400 uppercase">Jidi</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-print mt-10">
+        <button onclick="submitExam()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-xl hover:bg-indigo-700 transition shadow-lg flex items-center justify-center gap-2">
+            Finish and Check My Score 🏁
+        </button>
+    </div>
+
+    <div id="resultsBanner" class="hidden mt-6 p-6 bg-green-100 rounded-xl border-2 border-green-500 text-center animate-bounce">
+        <h2 class="text-2xl font-bold text-green-800">Masha'Allah! You finished! 🌟</h2>
+        <p class="text-green-700">Check the page to see which ones are correct (Green) and fix the ones that are Red.</p>
+    </div>
+</div>
+
+<script>
+    function selectOption(button, value) {
+        const parent = button.closest('.question-block');
+        const buttons = parent.querySelectorAll('.option-btn');
+        
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+        parent.dataset.userChoice = value;
+    }
+
+    function submitExam() {
+        let totalScore = 0;
+        const objQuestions = document.querySelectorAll('.question-block');
+        
+        // Grade Objectives
+        objQuestions.forEach(q => {
+            const correct = q.dataset.correct;
+            const chosen = q.dataset.userChoice;
+            const buttons = q.querySelectorAll('.option-btn');
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('correct', 'incorrect');
+                if (btn.innerText.toLowerCase().startsWith('(' + correct + ')')) {
+                    btn.classList.add('correct');
+                }
+                if (chosen && btn.innerText.toLowerCase().startsWith('(' + chosen + ')') && chosen !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (chosen === correct) totalScore += 10;
+        });
+
+        // Grade Written
+        const writtenInputs = document.querySelectorAll('input[data-answer]');
+        writtenInputs.forEach(input => {
+            const val = input.value.trim().toLowerCase();
+            const ans = input.dataset.answer.toLowerCase();
+            
+            input.classList.remove('text-green-600', 'text-red-600', 'font-bold');
+            if (val === ans) {
+                input.classList.add('text-green-600', 'font-bold');
+                totalScore += 5;
+            } else if (val !== "") {
+                input.classList.add('text-red-600', 'font-bold');
+                // Optional: Show the correct answer in a tooltip or next to it
+                input.title = "Correct answer: " + ans;
+            }
+        });
+
+        // Cap score at 100
+        const finalScore = Math.min(totalScore, 100);
+        document.getElementById('finalScore').innerText = finalScore;
+        document.getElementById('scoreDisplay').classList.remove('hidden');
+        document.getElementById('resultsBanner').classList.remove('hidden');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetExam() {
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected', 'correct', 'incorrect'));
+        document.querySelectorAll('.question-block').forEach(q => delete q.dataset.userChoice);
+        document.querySelectorAll('input').forEach(input => {
+            input.value = "";
+            input.classList.remove('text-green-600', 'text-red-600', 'font-bold');
+        });
+        document.getElementById('scoreDisplay').classList.add('hidden');
+        document.getElementById('resultsBanner').classList.add('hidden');
+    }
+</script>
+
+</body>
+</html>
