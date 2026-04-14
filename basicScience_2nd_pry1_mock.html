@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Science Interactive Mock Exam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f9ff; }
+        .explanation { display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; }
+        .option-btn:hover:not(:disabled) { border-color: #0ea5e9; background-color: #f0f9ff; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 600; }
+        .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .active-explanation { display: block !important; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="bg-sky-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
+            <h1 class="text-2xl font-black uppercase tracking-tight">Basic Science Mock Exam</h1>
+            <p class="text-sky-100 mt-2 font-medium">Primary 1 | 2026 Second Term Final Revision</p>
+            <div class="mt-4 flex justify-center gap-4 text-sm no-print">
+                <span id="scoreTracker" class="bg-sky-800 px-4 py-1 rounded-full font-bold">Score: 0</span>
+                <button onclick="location.reload()" class="bg-white text-sky-700 px-4 py-1 rounded-full font-bold hover:bg-sky-50 transition">Start Over</button>
+                <button onclick="window.print()" class="bg-sky-500 text-white px-4 py-1 rounded-full font-bold hover:bg-sky-400 transition">Print Exam</button>
+            </div>
+        </div>
+
+        <!-- Section A: Objectives -->
+        <div class="bg-white p-4 rounded-t-2xl border-x border-t font-black text-sky-800 uppercase text-sm">Section A: Objective Questions</div>
+        <div class="space-y-6 bg-white p-6 rounded-b-2xl shadow-md border-x border-b mb-12" id="quizContainer"></div>
+
+        <!-- Section B: Comprehensive Theory -->
+        <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-sky-600">
+            <h2 class="text-xl font-black text-sky-900 mb-6 uppercase border-b pb-2">Section B: Theory / Written Section</h2>
+            <p class="text-sm text-gray-500 italic mb-8">Instructions: Provide short and simple answers to the following questions.</p>
+            
+            <div class="space-y-10">
+                <!-- Air -->
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Air</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">1. What is Air?</label>
+                            <p class="text-xs text-gray-400 mb-2">Answer: Air is a ________ substance we cannot see but can ________ it.</p>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-16 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">2. List two (2) ways to show that air exists.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none" placeholder="Example: Air blows sand..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soil -->
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Soil</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">3. List the three (3) types of soil.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none" placeholder="1... 2... 3..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">4. Mention two (2) uses of soil.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">5. Name three (3) things that can be found in the soil (Components).</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Light -->
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Light Energy</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">6. What is Light?</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-16 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">7. List four (4) sources of light.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">8. Mention two (2) uses of light.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colours -->
+                <div class="p-4 bg-slate-50 rounded-xl">
+                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Colours</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">9. What is the natural colour of these objects?</label>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div>Cotton: ________</div>
+                                <div>Tomatoes: ________</div>
+                                <div>Charcoal: ________</div>
+                                <div>Sky: ________</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">10. List the three (3) Primary Colours.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-20 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">11. Mention two (2) uses of colour.</label>
+                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 text-center text-gray-500 text-sm italic pb-10 no-print">
+            Good luck with your Basic Science Exam!
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "What is Air?",
+                options: [
+                    "Something we can see clearly.",
+                    "A gaseous substance we cannot see but can feel.",
+                    "A hard rock."
+                ],
+                correct: 1,
+                note: "Note: Air is invisible (we cannot see it), but we can feel it on our skin."
+            },
+            {
+                q: "When a balloon bursts, what happens to the air inside?",
+                options: [
+                    "It turns into water.",
+                    "It escapes.",
+                    "It stays inside."
+                ],
+                correct: 1,
+                note: "Note: Air escapes the balloon because it is a gas that was occupying space inside."
+            },
+            {
+                q: "Strong air can ________ a tree.",
+                options: [
+                    "Bend",
+                    "Eat",
+                    "Paint"
+                ],
+                correct: 0,
+                note: "Note: When air is very strong (wind), it has power to bend trees."
+            },
+            {
+                q: "What is the top part of the earth where plants grow?",
+                options: [
+                    "Air",
+                    "Soil",
+                    "Clouds"
+                ],
+                correct: 1,
+                note: "Note: Soil is the top layer of the earth where we plant our crops."
+            },
+            {
+                q: "Which of these is a type of soil?",
+                options: [
+                    "Stones",
+                    "Clay soil",
+                    "Water soil"
+                ],
+                correct: 1,
+                note: "Note: The three types of soil are Sand, Clay, and Loamy soil."
+            },
+            {
+                q: "What can we get from the soil?",
+                options: [
+                    "Water",
+                    "Fire",
+                    "Air from the sky"
+                ],
+                correct: 0,
+                note: "Note: Soil helps us get water from the ground."
+            },
+            {
+                q: "Which of these is a component (thing found) in the soil?",
+                options: [
+                    "Table and chairs",
+                    "Rock particles like stones",
+                    "Computers"
+                ],
+                correct: 1,
+                note: "Note: Soil contains rock particles, water, animals, and soil air."
+            },
+            {
+                q: "What helps us to see things around us?",
+                options: [
+                    "Darkness",
+                    "Light",
+                    "Sound"
+                ],
+                correct: 1,
+                note: "Note: Light is a type of energy that lets our eyes see objects."
+            },
+            {
+                q: "Which of these is a source of light mentioned in your notes?",
+                options: [
+                    "Sun and Stars",
+                    "Stones and Sand",
+                    "Water and Soil"
+                ],
+                correct: 0,
+                note: "Note: Sun, Stars, Candles, and Electric bulbs are all sources of light."
+            },
+            {
+                q: "Sunlight helps ________ to grow.",
+                options: [
+                    "Plastics",
+                    "Plants",
+                    "Metals"
+                ],
+                correct: 1,
+                note: "Note: Plants need light energy from the sun to grow."
+            },
+            {
+                q: "We use light to help us see in the ________.",
+                options: [
+                    "Morning",
+                    "Dark",
+                    "Sun"
+                ],
+                correct: 1,
+                note: "Note: When it is dark, we use lamps or bulbs to help us see."
+            },
+            {
+                q: "According to your notes, what is the natural colour of Charcoal?",
+                options: [
+                    "White",
+                    "Red",
+                    "Black"
+                ],
+                correct: 2,
+                note: "Note: Natural colours: Charcoal is black, Cotton is white, and Tomatoes are red."
+            },
+            {
+                q: "Which of these are Primary Colours?",
+                options: [
+                    "Red, Yellow and Blue",
+                    "Green, Purple and Orange",
+                    "Pink, Brown and Grey"
+                ],
+                correct: 0,
+                note: "Note: Red, Yellow, and Blue are the three primary colours."
+            },
+            {
+                q: "Secondary colours consist of Green, Purple and ________.",
+                options: [
+                    "Black",
+                    "Orange",
+                    "Red"
+                ],
+                correct: 1,
+                note: "Note: Secondary colours are Green, Purple, and Orange."
+            },
+            {
+                q: "Colour can be used to identify the ________ of companies.",
+                options: [
+                    "Logo",
+                    "Food",
+                    "Address"
+                ],
+                correct: 0,
+                note: "Note: Companies use specific colours to help people recognize their logos."
+            }
+        ];
+
+        let score = 0;
+        const container = document.getElementById('quizContainer');
+
+        function renderQuiz() {
+            questions.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "p-4 border-b border-gray-100 last:border-0";
+                
+                let optionsHtml = item.options.map((opt, optIndex) => `
+                    <button class="option-btn" onclick="checkAnswer(this, ${index}, ${optIndex})">
+                        ${opt}
+                    </button>
+                `).join('');
+
+                qDiv.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-3">${index + 1}. ${item.q}</h3>
+                    <div class="options-container">${optionsHtml}</div>
+                    <div id="note-${index}" class="explanation"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        window.checkAnswer = function(btn, qIdx, optIdx) {
+            const parent = btn.parentElement;
+            const buttons = parent.querySelectorAll('button');
+            const noteDiv = document.getElementById(`note-${qIdx}`);
+            const isCorrect = optIdx === questions[qIdx].correct;
+
+            buttons.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                score += 1;
+                document.getElementById('scoreTracker').innerText = `Score: ${score}`;
+                noteDiv.innerHTML = `<span class="font-bold">Correct!</span> ${questions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50', 'text-green-800');
+            } else {
+                btn.classList.add('wrong');
+                buttons[questions[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold">Try again!</span> ${questions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50', 'text-red-800');
+            }
+        }
+
+        renderQuiz();
+    </script>
+</body>
+</html>
