@@ -1,22 +1,25 @@
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Security Education Interactive Mock Exam</title>
+    <title>Security Education | SmartRevision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
-        .explanation { display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
+        body { font-family: 'Inter', sans-serif; background-color: #fef2f2; }
         .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; }
-        .option-btn:hover:not(:disabled) { border-color: #3b82f6; background-color: #eff6ff; }
-        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 600; }
+        .option-btn:hover:not(:disabled) { border-color: #ef4444; background-color: #fff1f2; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
         .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .explanation { display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
         .active-explanation { display: block !important; }
+        .nav-link { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="pb-12">
+
 <!-- NAVIGATION BAR -->
     <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
@@ -35,245 +38,95 @@
             <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
         </div>
     </nav>
-    
-    <div class="max-w-3xl mx-auto">
-        <!-- Header -->
-        <div class="bg-blue-700 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
-            <h1 class="text-2xl font-black uppercase tracking-tight">Security Education Mock Exam</h1>
-            <p class="text-blue-100 mt-2 font-medium">Primary 1 | Second Term Comprehensive Revision</p>
-            <div class="mt-4 flex justify-center gap-4 text-sm">
-                <span id="scoreTracker" class="bg-blue-800 px-4 py-1 rounded-full font-bold">Score: 0</span>
-                <button onclick="location.reload()" class="bg-white text-blue-700 px-4 py-1 rounded-full font-bold hover:bg-blue-50 transition">Start Over</button>
+
+    <div class="max-w-3xl mx-auto px-4 mt-8">
+        <!-- Subject Header -->
+        <div class="bg-red-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
+            <h1 class="text-2xl font-black uppercase tracking-tight">Security Education</h1>
+            <p class="text-red-100 mt-1 font-medium italic">Safety First, Everywhere!</p>
+            <!-- Score Banner is now visible once the first answer is clicked -->
+            <div id="scoreBanner" class="hidden mt-4 bg-white text-red-600 px-4 py-2 rounded-full font-black text-xl animate-bounce">
+                Your Score: <span id="currentScore">0</span> / 10
             </div>
         </div>
 
-        <!-- Section A: Objectives -->
-        <div class="space-y-8" id="quizContainer"></div>
+        <div id="quizContainer" class="space-y-8"></div>
 
-        <!-- Section B: Theory Revision -->
-        <div class="mt-12 bg-white p-8 rounded-2xl shadow-md border-t-4 border-blue-600">
-            <h2 class="text-xl font-black text-blue-900 mb-6 uppercase">Section B: Theory Writing Practice</h2>
-            <div class="space-y-6">
-                <div>
-                    <label class="block font-bold text-gray-700 mb-2">1. What are security precautions?</label>
-                    <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-20 focus:border-blue-500 outline-none" placeholder="Type answer here..."></textarea>
-                </div>
-                <div>
-                    <label class="block font-bold text-gray-700 mb-2">2. List two (2) security precautions at home.</label>
-                    <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-20 focus:border-blue-500 outline-none" placeholder="1... 2..."></textarea>
-                </div>
-                <div>
-                    <label class="block font-bold text-gray-700 mb-2">3. List three (3) sources of danger.</label>
-                    <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-20 focus:border-blue-500 outline-none" placeholder="1... 2... 3..."></textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-10 text-center text-gray-500 text-sm italic pb-10">
-            End of Revision Exam. Stay Safe!
+        <!-- Controls -->
+        <div class="mt-12 flex flex-col gap-4">
+            <button onclick="location.reload()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-xl hover:bg-red-700 shadow-xl">RESTART EXAM 🔄</button>
         </div>
     </div>
 
     <script>
         const questions = [
-            {
-                q: "What are security precautions?",
-                options: [
-                    "Steps taken to make us free and safe from danger.",
-                    "Running on a busy road.",
-                    "Playing with sharp knives."
-                ],
-                correct: 0,
-                note: "Security precautions are the rules we follow to keep ourselves safe from harm."
-            },
-            {
-                q: "Which of these is a 'Source of Danger'?",
-                options: [
-                    "Eating safe food.",
-                    "Talking to strangers.",
-                    "Locking the door."
-                ],
-                correct: 1,
-                note: "Strangers are people we don't know, and they can cause us harm."
-            },
-            {
-                q: "Before crossing the road, you should look ________.",
-                options: [
-                    "Up at the sky.",
-                    "Right and left for cars.",
-                    "At your shoes."
-                ],
-                correct: 1,
-                note: "Checking both sides helps you see if a car is coming."
-            },
-            {
-                q: "At home, we should always ________ the doors and windows.",
-                options: [
-                    "Lock",
-                    "Leave open",
-                    "Break"
-                ],
-                correct: 0,
-                note: "Locking doors keeps bad people and danger out of our house."
-            },
-            {
-                q: "In the office, we install ________ to watch for security purposes.",
-                options: [
-                    "TV for cartoons",
-                    "CCTV cameras",
-                    "Large mirrors"
-                ],
-                correct: 1,
-                note: "CCTV cameras record everything to help keep the office safe."
-            },
-            {
-                q: "What should you do if you are being bullied at school?",
-                options: [
-                    "Keep it a secret.",
-                    "Report it to a teacher.",
-                    "Fight the person."
-                ],
-                correct: 1,
-                note: "Reporting bullying helps the school stop it and keep you safe."
-            },
-            {
-                q: "Personal security means taking ________ caution for your safety.",
-                options: [
-                    "No",
-                    "Small",
-                    "Extra"
-                ],
-                correct: 2,
-                note: "Personal security is about your own extra effort to stay safe at all times."
-            },
-            {
-                q: "In a car, children should sit in the ________.",
-                options: [
-                    "Front seat",
-                    "Back seat",
-                    "On the roof"
-                ],
-                correct: 1,
-                note: "The back seat is the safest place for children in a vehicle."
-            },
-            {
-                q: "A source of danger at home is a ________.",
-                options: [
-                    "Clean floor",
-                    "Wet floor",
-                    "Locked window"
-                ],
-                correct: 1,
-                note: "A wet floor is a danger because it can make you slip and fall."
-            },
-            {
-                q: "Staff in an office should NOT share their ________.",
-                options: [
-                    "Lunch",
-                    "Identity cards",
-                    "Pens"
-                ],
-                correct: 1,
-                note: "Sharing ID cards is unsafe because strangers can use them to enter the office."
-            },
-            {
-                q: "When crossing the road, you must obey the ________.",
-                options: [
-                    "Traffic light",
-                    "Bird signals",
-                    "Wind direction"
-                ],
-                correct: 0,
-                note: "Traffic lights tell you exactly when it is safe to walk."
-            },
-            {
-                q: "At school, the rule is: 'If you see something, ________'.",
-                options: [
-                    "Hide it",
-                    "Say it",
-                    "Forget it"
-                ],
-                correct: 1,
-                note: "Reporting strange things immediately helps prevent danger."
-            },
-            {
-                q: "You should avoid night travel because ________.",
-                options: [
-                    "It is safer",
-                    "It is dangerous",
-                    "The moon is out"
-                ],
-                correct: 1,
-                note: "Danger is harder to see in the dark, so avoid moving at night."
-            },
-            {
-                q: "A security guard should be at the office ________.",
-                options: [
-                    "Roof",
-                    "Gate",
-                    "Toilet"
-                ],
-                correct: 1,
-                note: "Guards at the gate check everyone entering to keep the office safe."
-            },
-            {
-                q: "You should always tell your ________ about your movement.",
-                options: [
-                    "Strangers",
-                    "Loved ones",
-                    "Toys"
-                ],
-                correct: 1,
-                note: "Letting family know where you are helps them protect you."
-            }
+            { q: "What are security precautions?", options: ["Steps taken to make us free and safe from danger.", "Playing with sharp objects.", "Talking to strangers."], correct: 0, note: "Security precautions are rules we follow to stay safe from harm." },
+            { q: "Which of these is a source of danger?", options: ["Locking the door.", "A fire outbreak.", "Obeying school rules."], correct: 1, note: "Fire is very dangerous and can cause serious harm." },
+            { q: "What should you do before crossing the road?", options: ["Close your eyes and run.", "Look right and left for cars.", "Wait for a stranger to pull you."], correct: 1, note: "Always use your eyes to check for cars before crossing." },
+            { q: "Which is a good security precaution at home?", options: ["Leave windows open at night.", "Turn off electrical appliances when not used.", "Leave the floor wet."], correct: 1, note: "Turning off appliances helps prevent fire outbreaks." },
+            { q: "Why do staff in an office wear identity (ID) cards?", options: ["To show they are allowed to be there.", "To share with visitors.", "To hide their names."], correct: 0, note: "ID cards help keep the office secure by identifying workers." },
+            { q: "What does 'Personal Security' mean?", options: ["Taking extra caution for your own safety.", "Locking only the office gate.", "Following only road signs."], correct: 0, note: "Personal security is being smart and vigilant about your own safety." },
+            { q: "What is a good personal security tip for children?", options: ["Go for a long walk at night.", "Always tell loved ones about your movement.", "Keep secrets about movement."], correct: 1, note: "Family should always know where you are so they can protect you." },
+            { q: "What should you do if you are being bullied at school?", options: ["Keep it a secret.", "Report the bully to a teacher.", "Fight back."], correct: 1, note: "Teachers are there to help you. Always report bullying!" },
+            { q: "In a moving bus, why is it dangerous to stand up?", options: ["Because you might fall if the bus stops.", "Because you are too tall.", "Because you want to see the road."], correct: 0, note: "Sudden stops can make you fall if you are not sitting safely." },
+            { q: "What does 'If you see something, say it' mean?", options: ["Keep secrets.", "Report strange or suspicious things immediately.", "Wait until tomorrow."], correct: 1, note: "Reporting danger quickly helps stop bad things from happening." }
         ];
 
         let score = 0;
-        const container = document.getElementById('quizContainer');
+        let answeredCount = 0;
+        let userAnswers = new Array(questions.length).fill(null);
 
         function renderQuiz() {
-            questions.forEach((item, index) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = "bg-white p-6 rounded-2xl shadow-sm border border-gray-100";
-                
-                let optionsHtml = item.options.map((opt, optIndex) => `
-                    <button class="option-btn" onclick="checkAnswer(this, ${index}, ${optIndex})">
-                        ${opt}
-                    </button>
-                `).join('');
-
-                qDiv.innerHTML = `
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
-                    <div class="options-container">${optionsHtml}</div>
-                    <div id="note-${index}" class="explanation"></div>
+            const container = document.getElementById('quizContainer');
+            questions.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-red-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${idx + 1}. ${item.q}</h3>
+                    <div id="options-${idx}" class="space-y-2">
+                        ${item.options.map((opt, optIdx) => `
+                            <button class="option-btn" onclick="selectAnswer(this, ${idx}, ${optIdx})">${opt}</button>
+                        `).join('')}
+                    </div>
+                    <div id="note-${idx}" class="explanation"></div>
                 `;
-                container.appendChild(qDiv);
+                container.appendChild(div);
             });
         }
 
-        window.checkAnswer = function(btn, qIdx, optIdx) {
-            const parent = btn.parentElement;
-            const buttons = parent.querySelectorAll('button');
-            const noteDiv = document.getElementById(`note-${qIdx}`);
-            const isCorrect = optIdx === questions[qIdx].correct;
+        window.selectAnswer = (btn, qIdx, optIdx) => {
+            // Prevent re-answering a question already answered
+            if (userAnswers[qIdx] !== null) return;
 
-            // Disable all buttons for this question
+            const item = questions[qIdx];
+            const buttons = btn.parentElement.querySelectorAll('.option-btn');
+            const noteDiv = document.getElementById(`note-${qIdx}`);
+            
+            userAnswers[qIdx] = optIdx;
+            answeredCount++;
+
+            // Disable all buttons for this question so they can't change answer
             buttons.forEach(b => b.disabled = true);
 
-            if (isCorrect) {
+            // Show score banner on first interaction
+            document.getElementById('scoreBanner').classList.remove('hidden');
+
+            if (optIdx === item.correct) {
+                score++;
                 btn.classList.add('correct');
-                score += 1;
-                document.getElementById('scoreTracker').innerText = `Score: ${score}`;
-                noteDiv.innerHTML = `<span class="font-bold text-green-700">Correct!</span><br>${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-green-50', 'text-green-800');
+                noteDiv.innerHTML = `<span class="text-green-700 font-bold">Well Done!</span><br>${item.note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50');
             } else {
                 btn.classList.add('wrong');
-                // Highlight correct answer
-                buttons[questions[qIdx].correct].classList.add('correct');
-                noteDiv.innerHTML = `<span class="font-bold text-red-700">Incorrect!</span><br>${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-red-50', 'text-red-800');
+                // Highlight the correct answer so the student learns
+                buttons[item.correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="text-red-700 font-bold">Not quite.</span><br>${item.note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
             }
-        }
+
+            // Update Score UI immediately
+            document.getElementById('currentScore').innerText = score;
+        };
 
         renderQuiz();
     </script>
