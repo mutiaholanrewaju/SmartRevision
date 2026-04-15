@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartSpeller | Primary 1 Mastery</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; }
         .nav-link { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
         
         @keyframes pulse-green {
-            0%, 100% { background-color: #10b981; border-color: #059669; transform: scale(1); }
-            50% { background-color: #059669; border-color: #047857; transform: scale(1.05); }
+            0%, 100% { background-color: #10b981; transform: scale(1); }
+            50% { background-color: #059669; transform: scale(1.05); }
         }
-        .speaking { animation: pulse-green 1s infinite; pointer-events: none; }
+        .speaking { animation: pulse-green 1s infinite; }
         
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake {
@@ -23,108 +23,142 @@
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
+
+        .word-grid::-webkit-scrollbar { height: 6px; }
+        .word-grid::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
+        
+        .visual-word-box {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            padding: 1rem;
+        }
+
+        .visual-word-text {
+            font-weight: 900;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+            text-align: center;
+            line-height: 1.1;
+            word-break: break-word;
+        }
+
+        .visual-bg-pattern {
+            position: absolute;
+            font-size: 10rem;
+            opacity: 0.05;
+            font-weight: 900;
+            color: white;
+            white-space: nowrap;
+            user-select: none;
+        }
     </style>
 </head>
 <body class="pb-12 min-h-screen">
 
-    <!-- Navigation Bar -->
     <nav id="global-nav" class="sticky top-0 z-50 bg-white border-b border-green-100 shadow-sm px-4 py-3">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <button onclick="showHome()" class="flex items-center gap-2 text-green-600 font-black text-xl italic">
                 <span>📚 SmartSpeller</span>
             </button>
-            <div id="global-score" class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-xs font-black">STARS: 0</div>
+            <div id="global-score" class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">Stars: 0</div>
         </div>
     </nav>
 
-    <div id="app" class="max-w-2xl mx-auto px-4 mt-8">
-        <!-- App content injected here -->
-    </div>
+    <div id="app" class="max-w-2xl mx-auto px-4 mt-6"></div>
 
     <script>
-        const apiKey = ""; 
-        let totalStars = 0;
-        const audioCache = new Map(); // Store audio to make replay instant
+        let totalStars = parseInt(localStorage.getItem('speller_stars')) || 0;
+        document.getElementById('global-score').innerText = `STARS: ${totalStars}`;
 
-        // COMPREHENSIVE 70-WORD LIST
         const levels = {
             "Level 1: Short Words": [
-                { word: "needle", chunks: "nee-dle", hint: "Look-Copy-Cover-Write tool." },
-                { word: "balloon", chunks: "bal-loon", hint: "Air fills this up." },
-                { word: "sandy", chunks: "san-dy", hint: "A type of grainy soil." },
-                { word: "clayey", chunks: "clay-ey", hint: "Soil for making pots." },
-                { word: "loamy", chunks: "loam-y", hint: "Best soil for farmers." },
-                { word: "stone", chunks: "stone", hint: "Rock particles in soil." },
-                { word: "candle", chunks: "can-dle", hint: "A source of light." },
-                { word: "charcoal", chunks: "char-coal", hint: "It is black in colour." },
-                { word: "cotton", chunks: "cot-ton", hint: "It is white in colour." },
-                { word: "purple", chunks: "pur-ple", hint: "A secondary colour." },
-                { word: "danger", chunks: "dan-ger", hint: "Something that can hurt." },
-                { word: "knife", chunks: "knife", hint: "A sharp object." },
-                { word: "fenced", chunks: "fen-ced", hint: "Office security feature." },
-                { word: "gated", chunks: "gat-ed", hint: "Office security feature." },
-                { word: "skills", chunks: "skills", hint: "Abilities in football." },
-                { word: "kicking", chunks: "kick-ing", hint: "Football skill." },
-                { word: "bata", chunks: "ba-ta", hint: "A traditional instrument." },
-                { word: "refuge", chunks: "ref-uge", hint: "To seek protection." },
-                { word: "mankind", chunks: "man-kind", hint: "Malia-n-Nas meaning." },
-                { word: "yam", chunks: "yam", hint: "Igname in French." }
+                { word: "needle", chunks: "nee-dle", hint: "Tool for sewing.", distractors: ["nidu", "neadle"] },
+                { word: "balloon", chunks: "bal-loon", hint: "Air fills this up.", distractors: ["balon", "balun"] },
+                { word: "sandy", chunks: "san-dy", hint: "Grainy soil.", distractors: ["sandi", "sandie"] },
+                { word: "clay", chunks: "clay", hint: "Smooth soil for pots.", distractors: ["clai", "claey"] },
+                { word: "loamy", chunks: "loa-my", hint: "Best soil for plants.", distractors: ["loami", "lowmy"] },
+                { word: "stone", chunks: "stone", hint: "Rock particles.", distractors: ["ston", "stowne"] },
+                { word: "candle", chunks: "can-dle", hint: "A source of light.", distractors: ["candul", "kandle"] },
+                { word: "charcoal", chunks: "char-coal", hint: "Black fuel.", distractors: ["chacoal", "charcol"] },
+                { word: "cotton", chunks: "cot-ton", hint: "White material.", distractors: ["cotin", "koton"] },
+                { word: "purple", chunks: "pur-ple", hint: "Secondary colour.", distractors: ["pupul", "perple"] },
+                { word: "danger", chunks: "dan-ger", hint: "Can cause harm.", distractors: ["danja", "dangr"] },
+                { word: "knife", chunks: "knife", hint: "Sharp object.", distractors: ["nife", "kife"] },
+                { word: "fenced", chunks: "fen-ced", hint: "Gated area.", distractors: ["fensed", "fense"] },
+                { word: "gated", chunks: "gat-ed", hint: "Security entrance.", distractors: ["gated", "gayted"] },
+                { word: "skills", chunks: "skills", hint: "Football ability.", distractors: ["skils", "skilz"] },
+                { word: "kicking", chunks: "kick-ing", hint: "Hitting with foot.", distractors: ["kikin", "kikking"] },
+                { word: "signal", chunks: "sig-nal", hint: "Follow safety road signs.", distractors: ["signel", "signul"] },
+                { word: "refuge", chunks: "ref-uge", hint: "Protection.", distractors: ["refuji", "refuige"] },
+                { word: "mankind", chunks: "man-kind", hint: "All people.", distractors: ["mankaind", "mankin"] },
+                { word: "peacock", chunks: "pea-cock", hint: "A beautiful bird with many feathers.", distractors: ["pecock", "peacok"] }
             ],
             "Level 2: Medium Mastery": [
-                { word: "substance", chunks: "sub-stance", hint: "Air is a gaseous ______." },
-                { word: "existence", chunks: "ex-is-tence", hint: "Showing air is there." },
-                { word: "particles", chunks: "par-ti-cles", hint: "Rock pieces in soil." },
-                { word: "identify", chunks: "i-den-ti-fy", hint: "Recognizing logos." },
-                { word: "primary", chunks: "pri-ma-ry", hint: "Main type of colours." },
-                { word: "secondary", chunks: "sec-on-da-ry", hint: "Mixed colours." },
-                { word: "strangers", chunks: "stran-gers", hint: "People we don't know." },
-                { word: "accident", chunks: "ac-ci-dent", hint: "Happens on the road." },
-                { word: "watchful", chunks: "watch-ful", hint: "Being careful at home." },
-                { word: "vigilant", chunks: "vi-gi-lant", hint: "Act smart and fast." },
-                { word: "movement", chunks: "move-ment", hint: "Report strange things." },
-                { word: "rules", chunks: "rules", hint: "Follow them at school." },
-                { word: "stopping", chunks: "stop-ping", hint: "Football skill." },
-                { word: "heading", chunks: "head-ing", hint: "Football skill." },
-                { word: "dribbling", chunks: "drib-bling", hint: "Football skill." },
-                { word: "floating", chunks: "float-ing", hint: "Staying up in water." },
-                { word: "breathing", chunks: "breath-ing", hint: "Skill for swimming." },
-                { word: "mischief", chunks: "mis-chief", hint: "Whisper of evil." },
-                { word: "blessing", chunks: "bless-ing", hint: "Barakah from Allah." },
-                { word: "listening", chunks: "lis-ten-ing", hint: "Way to obey parents." }
+                { word: "substance", chunks: "sub-stance", hint: "Air is a gaseous ______.", distractors: ["substans", "substense"] },
+                { word: "existence", chunks: "ex-is-tence", hint: "Proof of being.", distractors: ["existans", "exis-tence"] },
+                { word: "particles", chunks: "par-ti-cles", hint: "Tiny pieces.", distractors: ["paticuls", "partikles"] },
+                { word: "identify", chunks: "i-den-ti-fy", hint: "To recognize.", distractors: ["identifai", "idantify"] },
+                { word: "primary", chunks: "pri-ma-ry", hint: "Main colours.", distractors: ["praimari", "primery"] },
+                { word: "secondary", chunks: "sec-on-da-ry", hint: "Mixed colours.", distractors: ["secondari", "secondery"] },
+                { word: "strangers", chunks: "stran-gers", hint: "Unknown people.", distractors: ["strenjas", "stranjers"] },
+                { word: "accident", chunks: "ac-ci-dent", hint: "Road trouble.", distractors: ["axident", "accidant"] },
+                { word: "watchful", chunks: "watch-ful", hint: "Be careful.", distractors: ["watchfol", "wachful"] },
+                { word: "vigilant", chunks: "vi-gi-lant", hint: "Think fast.", distractors: ["vigilant", "vijilant"] },
+                { word: "movement", chunks: "move-ment", hint: "Going places.", distractors: ["movmant", "muvement"] },
+                { word: "rules", chunks: "rules", hint: "School laws.", distractors: ["ruls", "ruels"] },
+                { word: "stopping", chunks: "stop-ping", hint: "Halt the ball.", distractors: ["stopin", "stoppin"] },
+                { word: "heading", chunks: "head-ing", hint: "Hit with head.", distractors: ["heding", "heddin"] },
+                { word: "dribbling", chunks: "drib-bling", hint: "Control ball.", distractors: ["driblin", "dribbling"] },
+                { word: "floating", chunks: "float-ing", hint: "Up in water.", distractors: ["floting", "floatten"] },
+                { word: "breathing", chunks: "breath-ing", hint: "In and out.", distractors: ["brethin", "breathing"] },
+                { word: "mischief", chunks: "mis-chief", hint: "Evil whisper.", distractors: ["mischif", "mischeef"] },
+                { word: "blessing", chunks: "bless-ing", hint: "God's gift.", distractors: ["blesin", "blessin"] },
+                { word: "listening", chunks: "lis-ten-ing", hint: "Obeying.", distractors: ["lisnin", "listning"] }
             ],
             "Level 3: Long & Tricky": [
-                { word: "gaseous", chunks: "ga-se-ous", hint: "Air is a ______ substance." },
-                { word: "decoration", chunks: "dec-o-ra-tion", hint: "Using colour to beautify." },
-                { word: "precautions", chunks: "pre-cau-tions", hint: "Steps to stay safe." },
-                { word: "suspicious", chunks: "sus-pi-cious", hint: "Strange movements." },
-                { word: "appliances", chunks: "ap-pli-an-ces", hint: "Electrical items." },
-                { word: "identities", chunks: "i-den-ti-ties", hint: "Staff ID cards." },
-                { word: "clearance", chunks: "clear-ance", hint: "Given to visitors." },
-                { word: "installation", chunks: "in-stal-la-tion", hint: "Setting up CCTV." },
-                { word: "environment", chunks: "en-vi-ron-ment", hint: "Place around us." },
-                { word: "regulations", chunks: "reg-u-la-tions", hint: "School rules and..." },
-                { word: "indigenous", chunks: "in-di-ge-nous", hint: "Local games." },
-                { word: "butterfly", chunks: "but-ter-fly", hint: "Swimming stroke." },
-                { word: "backstroke", chunks: "back-stroke", hint: "Swimming stroke." },
-                { word: "coordinates", chunks: "co-or-di-nates", hint: "What a referee does." },
-                { word: "alphabet", chunks: "al-pha-bet", hint: "Letters like A to Z." },
-                { word: "orphanage", chunks: "or-pha-nage", hint: "Home for children." },
-                { word: "achievement", chunks: "a-chieve-ment", hint: "What someone has done." },
-                { word: "governor", chunks: "gov-er-nor", hint: "Leader of a state." },
-                { word: "president", chunks: "pres-i-dent", hint: "Leader of a country." },
-                { word: "traditional", chunks: "tra-di-tion-al", hint: "Local music." }
+                { word: "gaseous", chunks: "ga-se-ous", hint: "Air state.", distractors: ["gaseos", "gasius"] },
+                { word: "decoration", chunks: "dec-o-ra-tion", hint: "Beautifying.", distractors: ["decorashun", "decoretion"] },
+                { word: "precautions", chunks: "pre-cau-tions", hint: "Safety steps.", distractors: ["precorshuns", "precaushons"] },
+                { word: "suspicious", chunks: "sus-pi-cious", hint: "Looks strange.", distractors: ["suspishos", "suspishus"] },
+                { word: "appliances", chunks: "ap-pli-an-ces", hint: "Electric tools.", distractors: ["apliances", "applianses"] },
+                { word: "identities", chunks: "i-den-ti-ties", hint: "ID cards.", distractors: ["idantities", "identitis"] },
+                { word: "clearance", chunks: "clear-ance", hint: "Permission.", distractors: ["clearents", "clearans"] },
+                { word: "installation", chunks: "in-stal-la-tion", hint: "Setting up.", distractors: ["instalashun", "installesun"] },
+                { word: "environment", chunks: "en-vi-ron-ment", hint: "Place around.", distractors: ["envaironment", "environmant"] },
+                { word: "regulations", chunks: "re-gu-la-tions", hint: "Official rules.", distractors: ["regulashuns", "reguleshons"] },
+                { word: "indigenous", chunks: "in-di-ge-nous", hint: "Local games.", distractors: ["indijenos", "indijinus"] },
+                { word: "butterfly", chunks: "but-ter-fly", hint: "Swim stroke.", distractors: ["butafly", "butterfli"] },
+                { word: "backstroke", chunks: "back-stroke", hint: "Swim stroke.", distractors: ["bakstrok", "backstroak"] },
+                { word: "coordinates", chunks: "co-or-di-nates", hint: "Referee job.", distractors: ["cordinetes", "coordintes"] },
+                { word: "alphabet", chunks: "al-pha-bet", hint: "Letters.", distractors: ["alfabet", "alphabit"] },
+                { word: "orphanage", chunks: "or-pha-nage", hint: "Kids home.", distractors: ["ofanege", "orphanige"] },
+                { word: "achievement", chunks: "a-chieve-ment", hint: "Success.", distractors: ["achivemant", "achievment"] },
+                { word: "governor", chunks: "gov-er-nor", hint: "State leader.", distractors: ["govanor", "governa"] },
+                { word: "president", chunks: "pre-si-dent", hint: "Country leader.", distractors: ["prezident", "presidant"] },
+                { word: "traditional", chunks: "tra-di-tion-al", hint: "Old ways.", distractors: ["tradishunal", "traditionel"] }
             ],
             "Level 4: Mega Challenge": [
-                { word: "characteristics", chunks: "cha-rac-te-ris-tics", hint: "Hero qualities." },
-                { word: "hardworking", chunks: "hard-work-ing", hint: "A hero works very..." },
-                { word: "cleanliness", chunks: "clean-li-ness", hint: "Taharah teaching." },
-                { word: "surroundings", chunks: "sur-round-ings", hint: "Area around us." },
-                { word: "ablution", chunks: "ab-lu-tion", hint: "Al-wudu process." },
-                { word: "obedience", chunks: "o-be-di-ence", hint: "Doing what you are told." },
-                { word: "democratic", chunks: "dem-o-cra-tic", hint: "Part of NNDP name." },
-                { word: "instrument", chunks: "in-stru-ment", hint: "Used for music." },
-                { word: "xylophone", chunks: "xy-lo-phone", hint: "Musical instrument." },
-                { word: "unconscious", chunks: "un-con-scious", hint: "A tricky spelling." }
+                { word: "characteristics", chunks: "cha-rac-te-ris-tics", hint: "Qualities.", distractors: ["charataristics", "charactaristics"] },
+                { word: "hardworking", chunks: "hard-work-ing", hint: "Busy hero.", distractors: ["hadworkin", "hardworken"] },
+                { word: "cleanliness", chunks: "clean-li-ness", hint: "Faith part.", distractors: ["clenlines", "cleanlyness"] },
+                { word: "surroundings", chunks: "sur-round-ings", hint: "Area near us.", distractors: ["suroundins", "surrounden"] },
+                { word: "ablution", chunks: "ab-lu-tion", hint: "Wudu.", distractors: ["ablushun", "ablosun"] },
+                { word: "obedience", chunks: "o-be-di-ence", hint: "Follow laws.", distractors: ["obedients", "obediense"] },
+                { word: "democratic", chunks: "de-mo-cra-tic", hint: "Voting name.", distractors: ["democratik", "democrata"] },
+                { word: "instrument", chunks: "in-stru-ment", hint: "Musical tool.", distractors: ["instrumant", "instrumant"] },
+                { word: "xylophone", chunks: "xy-lo-phone", hint: "Wooden keys.", distractors: ["zylofone", "xylofone"] },
+                { word: "unconscious", chunks: "un-con-scious", hint: "Not awake.", distractors: ["unconshos", "unconshus"] }
             ]
         };
 
@@ -135,191 +169,136 @@
             const app = document.getElementById('app');
             app.innerHTML = `
                 <div class="text-center py-6">
-                    <h1 class="text-3xl font-black text-green-800 mb-2 uppercase tracking-tight">SmartSpeller Hub</h1>
-                    <p class="text-gray-600 mb-8 font-medium italic">Master 70 Tricky Words from your Notes! 🇳🇬</p>
-                    
+                    <h1 class="text-3xl font-black text-green-800 mb-2 uppercase tracking-tight text-balance">SmartSpeller Hub</h1>
+                    <p class="text-gray-600 mb-8 font-medium italic">Improving spellings and visual recognition! 🇳🇬</p>
                     <div class="space-y-4">
-                        ${Object.keys(levels).map(level => `
-                            <button onclick="startLevel('${level}')" class="w-full bg-white p-6 rounded-3xl shadow-sm border-2 border-green-100 hover:border-green-500 transition text-left group flex justify-between items-center">
+                        ${Object.keys(levels).map(level => {
+                            const prog = localStorage.getItem(`prog_${level}`) || 0;
+                            return `
+                            <button onclick="startLevel('${level}', ${prog})" class="w-full bg-white p-6 rounded-3xl shadow-sm border-2 border-green-100 hover:border-green-400 hover:shadow-md transition text-left group flex justify-between items-center">
                                 <div>
-                                    <h3 class="text-lg font-bold text-gray-800 group-hover:text-green-600 uppercase tracking-tight">${level}</h3>
-                                    <p class="text-[10px] text-gray-400 mt-1 uppercase font-black tracking-widest">${levels[level].length} Challenge Words</p>
+                                    <h3 class="text-lg font-bold text-gray-800 group-hover:text-green-600 uppercase">${level}</h3>
+                                    <p class="text-[10px] text-gray-400 mt-1 uppercase font-black">Progress: ${prog}/${levels[level].length}</p>
                                 </div>
                                 <span class="text-2xl text-green-200 group-hover:text-green-500 transition">➔</span>
-                            </button>
-                        `).join('')}
+                            </button>`}).join('')}
                     </div>
                 </div>
             `;
         }
 
-        function startLevel(lvl) {
+        function startLevel(lvl, index) {
             currentLevel = lvl;
-            currentIndex = 0;
+            currentIndex = Math.min(parseInt(index), levels[lvl].length - 1);
             showLookStep();
         }
 
-        async function speakWord(text) {
-            const btns = document.querySelectorAll('.speak-btn');
-            
-            // 1. Check if we already have this audio in cache
-            if (audioCache.has(text)) {
-                const audio = new Audio(audioCache.get(text));
-                btns.forEach(b => b.classList.add('speaking'));
-                audio.play();
-                audio.onended = () => btns.forEach(b => b.classList.remove('speaking'));
-                return;
-            }
-
-            // 2. Otherwise, fetch it once
-            btns.forEach(b => {
-                b.classList.add('speaking');
-                b.innerHTML = '<span class="text-[10px] font-black uppercase">Loading...</span>';
-            });
-            
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Speak in a very clear, professional Nigerian teacher's voice. Say: "The word is ${text}." Then pause and say "${text}" one more time.` }] }],
-                        generationConfig: {
-                            responseModalities: ["AUDIO"],
-                            speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
-                        }
-                    })
-                });
-
-                if (!response.ok) throw new Error('API request failed');
-                
-                const result = await response.json();
-                const audioData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-                
-                if (!audioData) throw new Error('No audio data received');
-
-                const audioBlob = pcmToWavBlob(audioData, 24000);
-                const audioUrl = URL.createObjectURL(audioBlob);
-                
-                // Cache the URL so the next click is instant
-                audioCache.set(text, audioUrl);
-
-                const audio = new Audio(audioUrl);
-                audio.play();
-                audio.onended = () => { 
-                    btns.forEach(b => {
-                        b.classList.remove('speaking');
-                        b.innerHTML = '<span class="text-2xl">🔊</span>';
-                    });
-                };
-            } catch (e) { 
-                console.error("Audio Error:", e); 
-                btns.forEach(b => {
-                    b.classList.remove('speaking');
-                    b.innerHTML = '<span class="text-2xl">🔊</span>';
-                });
-            }
+        function speak(text) {
+            window.speechSynthesis.cancel(); 
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.85;
+            utterance.pitch = 1;
+            window.speechSynthesis.speak(utterance);
         }
 
-        function pcmToWavBlob(base64Pcm, sampleRate) {
-            const pcmData = Uint8Array.from(atob(base64Pcm), c => c.charCodeAt(0));
-            const wavHeader = new ArrayBuffer(44);
-            const view = new DataView(wavHeader);
-            view.setUint32(0, 0x52494646, false); 
-            view.setUint32(4, 36 + pcmData.length, true);
-            view.setUint32(8, 0x57415645, false); 
-            view.setUint32(12, 0x666d7420, false); 
-            view.setUint32(16, 16, true);
-            view.setUint16(20, 1, true); 
-            view.setUint16(22, 1, true); 
-            view.setUint32(24, sampleRate, true);
-            view.setUint32(28, sampleRate * 2, true);
-            view.setUint16(32, 2, true);
-            view.setUint16(34, 16, true);
-            view.setUint32(36, 0x64617461, false); 
-            view.setUint32(40, pcmData.length, true);
-            return new Blob([wavHeader, pcmData], { type: 'audio/wav' });
+        function jumpToWord(idx) {
+            currentIndex = idx;
+            showLookStep();
         }
 
         function renderHeader() {
             return `
-                <div class="flex justify-between items-center mb-6">
-                    <button onclick="showHome()" class="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-red-500 transition">✖ QUIT</button>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-black text-green-600 uppercase tracking-widest">${currentIndex + 1} / ${levels[currentLevel].length}</span>
-                        <div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500" style="width: ${((currentIndex + 1) / levels[currentLevel].length) * 100}%"></div>
-                        </div>
+                <div class="mb-4">
+                    <div class="flex justify-between items-center text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">
+                        <button onclick="showHome()" class="hover:text-red-500">✖ Quit</button>
+                        <span>${currentLevel}</span>
+                        <span>Word ${currentIndex + 1}/${levels[currentLevel].length}</span>
+                    </div>
+                    <div id="word-grid" class="word-grid flex gap-2 overflow-x-auto pb-3 mb-2 px-1">
+                        ${levels[currentLevel].map((w, i) => `
+                            <button id="nav-item-${i}" onclick="jumpToWord(${i})" class="flex-shrink-0 w-10 h-10 rounded-full text-xs font-bold border-2 transition
+                                ${i === currentIndex ? 'border-green-600 bg-green-600 text-white' : 
+                                  i < currentIndex ? 'border-green-200 bg-green-50 text-green-600' : 'border-gray-100 bg-white text-gray-400'}">
+                                ${i + 1}
+                            </button>`).join('')}
                     </div>
                 </div>
             `;
+        }
+
+        function autoScrollNav() {
+            const activeItem = document.getElementById(`nav-item-${currentIndex}`);
+            if (activeItem) {
+                activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        function getDynamicFontSize(word) {
+            const len = word.length;
+            if (len > 12) return '2.2rem';
+            if (len > 10) return '2.8rem';
+            if (len > 8) return '3.5rem';
+            return '4.5rem';
         }
 
         function showLookStep() {
             const wordObj = levels[currentLevel][currentIndex];
             const app = document.getElementById('app');
+            const fontSize = getDynamicFontSize(wordObj.word);
+            
             app.innerHTML = `
-                <div class="bg-white p-8 rounded-[2rem] shadow-xl border-t-8 border-green-500">
+                <div class="bg-white p-6 rounded-[2rem] shadow-xl border-t-8 border-green-500">
                     ${renderHeader()}
-                    <div class="text-center mb-10">
-                        <button onclick="speakWord('${wordObj.word}')" class="speak-btn mb-6 bg-green-100 p-5 rounded-full hover:bg-green-200 transition shadow-sm">
-                            <span class="text-2xl">🔊</span>
-                        </button>
-                        <h2 class="text-5xl font-black text-gray-800 mb-4 tracking-tight">${wordObj.word}</h2>
-                        <div class="flex justify-center gap-2">
-                            ${wordObj.chunks.split('-').map(c => `<span class="bg-gray-50 px-3 py-1 rounded-lg text-green-600 font-bold text-lg border border-green-50">${c}</span>`).join('')}
+                    <div class="text-center">
+                        <div class="visual-word-box mb-6">
+                            <div class="visual-bg-pattern">${wordObj.word}</div>
+                            <h1 class="visual-word-text" style="font-size: ${fontSize}">${wordObj.word}</h1>
                         </div>
-                        <p class="text-gray-400 mt-6 text-sm italic">"${wordObj.hint}"</p>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 text-center">
-                            <h4 class="text-blue-800 font-black text-xs uppercase mb-1 tracking-widest italic">Step 1: Look & Clap</h4>
-                            <p class="text-blue-700 text-sm">Clap as you see the green chunks!</p>
+                        <button onclick="speak('${wordObj.word}')" class="mb-4 bg-green-100 p-4 rounded-full shadow-sm hover:bg-green-200 transition">🔊 Hear Word</button>
+                        <h2 class="text-4xl font-black text-gray-800 mb-2 tracking-tight uppercase">${wordObj.word}</h2>
+                        <div class="flex justify-center gap-2 mb-4 flex-wrap">
+                            ${wordObj.chunks.split('-').map(c => `<span class="bg-green-50 px-3 py-1 rounded-lg text-green-700 font-bold border border-green-100 text-lg uppercase">${c}</span>`).join('')}
                         </div>
-                        <button onclick="showCopyStep()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg transition transform active:scale-95">Next: Copy ➔</button>
+                        <p class="text-gray-400 text-sm italic">"${wordObj.hint}"</p>
                     </div>
+                    <button onclick="showCopyStep()" class="mt-8 w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg transform active:scale-95 transition uppercase tracking-widest">I'VE LOOKED. NEXT ➔</button>
                 </div>
             `;
-            speakWord(wordObj.word);
+            localStorage.setItem(`prog_${currentLevel}`, currentIndex);
+            speak(wordObj.word);
+            autoScrollNav();
         }
 
         function showCopyStep() {
             const wordObj = levels[currentLevel][currentIndex];
             const app = document.getElementById('app');
+            const fontSize = wordObj.word.length > 10 ? '3.5rem' : '5rem';
+
             app.innerHTML = `
                 <div class="bg-white p-8 rounded-[2rem] shadow-xl border-t-8 border-yellow-500">
                     ${renderHeader()}
-                    <div class="text-center mb-6">
-                        <button onclick="speakWord('${wordObj.word}')" class="speak-btn bg-yellow-100 p-4 rounded-full mb-4">
-                            <span class="text-xl">🔊</span>
-                        </button>
-                        <h2 class="text-5xl font-black text-gray-800 mb-8">${wordObj.word}</h2>
+                    <div class="text-center mb-8">
+                        <h2 class="font-black text-gray-800 mb-4 uppercase leading-none" style="font-size: ${fontSize}">${wordObj.word}</h2>
+                        <p class="text-yellow-700 text-sm font-bold uppercase tracking-widest italic underline underline-offset-4">Step 2: Type the word exactly</p>
                     </div>
-                    <div class="bg-yellow-50 p-4 rounded-2xl border border-yellow-100 mb-6 text-center">
-                        <h4 class="text-yellow-800 font-black text-xs uppercase mb-1 tracking-widest">Step 2: Copy</h4>
-                        <p class="text-yellow-700 text-sm italic">Type the word exactly like it is above.</p>
-                    </div>
-                    <input type="text" id="copy-input" autocomplete="off" class="w-full text-center text-3xl font-bold p-4 border-b-4 border-gray-200 focus:border-yellow-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
-                    <div id="copy-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Try Again! Check the spelling above.</div>
-                    <button onclick="validateCopy()" class="w-full bg-yellow-500 text-white py-4 rounded-2xl font-black text-xl shadow-lg">Check Word ➔</button>
+                    <input type="text" id="copy-input" autocomplete="off" class="w-full text-center text-3xl font-black p-4 border-b-4 border-gray-200 focus:border-yellow-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl uppercase" placeholder="...">
+                    <div id="copy-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Check the letters above!</div>
+                    <button onclick="validateCopy()" class="w-full bg-yellow-500 text-white py-4 rounded-2xl font-black text-xl shadow-lg uppercase tracking-widest">CHECK WORD ➔</button>
                 </div>
             `;
             document.getElementById('copy-input').focus();
+            autoScrollNav();
         }
 
         function validateCopy() {
-            const wordObj = levels[currentLevel][currentIndex];
             const input = document.getElementById('copy-input');
             const error = document.getElementById('copy-error');
-            
-            if (input.value.trim().toLowerCase() === wordObj.word.toLowerCase()) {
+            if (input.value.trim().toLowerCase() === levels[currentLevel][currentIndex].word.toLowerCase()) {
                 showCoverStep();
             } else {
                 input.classList.add('shake', 'border-red-500');
                 error.style.opacity = '1';
-                setTimeout(() => {
-                    input.classList.remove('shake', 'border-red-500');
-                    error.style.opacity = '0';
-                }, 1500);
+                setTimeout(() => { input.classList.remove('shake', 'border-red-500'); error.style.opacity = '0'; }, 1500);
             }
         }
 
@@ -329,40 +308,39 @@
             app.innerHTML = `
                 <div class="bg-white p-8 rounded-[2rem] shadow-xl border-t-8 border-purple-500">
                     ${renderHeader()}
-                    <div class="h-32 flex flex-col items-center justify-center bg-gray-900 rounded-[1.5rem] mb-8 relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-                        <span class="text-white/10 font-black text-5xl uppercase tracking-[0.3em]">HIDDEN</span>
-                        <button onclick="speakWord('${wordObj.word}')" class="speak-btn mt-2 bg-purple-600/30 text-white px-6 py-2 rounded-full text-[10px] font-black border border-white/20 hover:bg-purple-600 transition uppercase tracking-widest">🔊 Listen Again</button>
+                    <div class="h-40 flex flex-col items-center justify-center bg-gray-900 rounded-[1.5rem] mb-8 relative overflow-hidden">
+                        <span class="text-white/10 font-black text-5xl tracking-widest uppercase select-none">Hidden</span>
+                        <button onclick="speak('${wordObj.word}')" class="mt-4 bg-purple-600 text-white px-6 py-2 rounded-full font-black uppercase border border-purple-400 hover:bg-purple-700 transition shadow-lg">🔊 Hear Word</button>
                     </div>
-                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100 mb-6 text-center">
-                        <h4 class="text-purple-800 font-black text-xs uppercase mb-1 tracking-widest">Step 3: Write from Brain</h4>
-                        <p class="text-purple-700 text-sm italic">The word is gone! Can you type it now?</p>
+                    <div class="text-center mb-6">
+                         <p class="text-purple-700 text-sm font-bold uppercase tracking-widest italic underline underline-offset-4">Step 3: Write from memory</p>
                     </div>
-                    <input type="text" id="write-input" autocomplete="off" class="w-full text-center text-3xl font-bold p-4 border-b-4 border-gray-200 focus:border-purple-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
-                    <div id="write-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Not quite! Try typing it again.</div>
-                    <button onclick="validateFinal()" class="w-full bg-purple-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg uppercase">Confirm 🏁</button>
+                    <input type="text" id="write-input" autocomplete="off" class="w-full text-center text-3xl font-black p-4 border-b-4 border-gray-200 focus:border-purple-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl uppercase" placeholder="...">
+                    <div id="write-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Try again! Memory test.</div>
+                    <button onclick="validateFinal()" class="w-full bg-purple-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg uppercase tracking-widest">CONFIRM 🏁</button>
                 </div>
             `;
             document.getElementById('write-input').focus();
-            speakWord(wordObj.word);
+            speak(wordObj.word);
+            autoScrollNav();
         }
 
         function validateFinal() {
-            const wordObj = levels[currentLevel][currentIndex];
             const input = document.getElementById('write-input');
             const error = document.getElementById('write-error');
-            
-            if (input.value.trim().toLowerCase() === wordObj.word.toLowerCase()) {
+            const val = input.value.trim().toLowerCase();
+            const correct = levels[currentLevel][currentIndex].word.toLowerCase();
+
+            if (val === correct) {
                 totalStars += 10;
+                localStorage.setItem('speller_stars', totalStars);
                 document.getElementById('global-score').innerText = `STARS: ${totalStars}`;
-                showSuccess();
+                showVisualMemoryStep(null); 
             } else {
                 input.classList.add('shake', 'border-red-500');
                 error.style.opacity = '1';
-                setTimeout(() => {
-                    input.classList.remove('shake', 'border-red-500');
-                    error.style.opacity = '0';
-                    showVisualMemoryStep(input.value.trim());
+                setTimeout(() => { 
+                    showVisualMemoryStep(val); 
                 }, 1000);
             }
         }
@@ -370,31 +348,41 @@
         function showVisualMemoryStep(wrongInput) {
             const wordObj = levels[currentLevel][currentIndex];
             const app = document.getElementById('app');
-            const options = [wordObj.word.toLowerCase(), wrongInput].sort(() => Math.random() - 0.5);
+            const correct = wordObj.word.toLowerCase();
+            
+            let options = [correct, ...wordObj.distractors];
+            if (wrongInput && !options.includes(wrongInput.toLowerCase())) options.push(wrongInput.toLowerCase());
+            options = [...new Set(options)].sort(() => Math.random() - 0.5).slice(0, 3);
+
             app.innerHTML = `
                 <div class="bg-white p-8 rounded-[2rem] shadow-xl border-t-8 border-red-500">
                     <div class="text-center mb-8">
-                        <span class="text-5xl">👀</span>
-                        <h2 class="text-2xl font-black text-gray-800 mt-4 uppercase">Which looks right?</h2>
-                        <p class="text-gray-500 text-xs italic mt-2">Pick the spelling you saw in your book.</p>
-                        <button onclick="speakWord('${wordObj.word}')" class="speak-btn mt-4 bg-red-50 text-red-600 px-4 py-1 rounded-full font-black text-[10px] border border-red-100 uppercase tracking-widest">🔊 Listen Again</button>
+                        <span class="text-6xl">👀</span>
+                        <h2 class="text-2xl font-black text-gray-800 mt-4 uppercase tracking-tight">Visual Check</h2>
+                        <p class="text-gray-500 text-sm font-bold mt-2">Which one matches the correct spelling?</p>
+                        <button onclick="speak('${wordObj.word}')" class="mt-4 text-red-600 font-black text-[10px] uppercase border border-red-100 px-4 py-2 rounded-full">🔊 Listen Again</button>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
-                        ${options.map(opt => `
-                            <button onclick="checkVisualChoice('${opt}')" class="p-8 border-4 border-gray-100 rounded-[1.5rem] text-3xl font-black text-gray-700 hover:border-green-500 hover:bg-green-50 transition active:scale-95">
+                        ${options.map(opt => {
+                            const btnFontSize = opt.length > 12 ? 'text-xl' : 'text-3xl';
+                            return `
+                            <button onclick="checkVisualChoice('${opt}')" class="p-8 border-4 border-gray-100 rounded-[1.5rem] font-black text-gray-700 hover:border-green-500 hover:bg-green-50 transition active:scale-95 uppercase ${btnFontSize}">
                                 ${opt}
-                            </button>
-                        `).join('')}
+                            </button>`}).join('')}
                     </div>
                 </div>
             `;
+            autoScrollNav();
         }
 
         function checkVisualChoice(choice) {
-            const wordObj = levels[currentLevel][currentIndex];
-            if (choice === wordObj.word.toLowerCase()) {
-                showLookStep();
+            if (choice.toLowerCase() === levels[currentLevel][currentIndex].word.toLowerCase()) {
+                totalStars += 5;
+                localStorage.setItem('speller_stars', totalStars);
+                document.getElementById('global-score').innerText = `STARS: ${totalStars}`;
+                showSuccess();
             } else {
+                alert("Incorrect choice! Look at the spelling carefully.");
                 showLookStep();
             }
         }
@@ -403,31 +391,29 @@
             const app = document.getElementById('app');
             app.innerHTML = `
                 <div class="bg-white p-12 rounded-[2rem] shadow-xl text-center border-t-8 border-green-500">
-                    <span class="text-7xl">🥳</span>
-                    <h3 class="text-3xl font-black text-green-600 uppercase mt-4 mb-2 tracking-tight">Well Done!</h3>
-                    <p class="text-gray-500 mb-8 font-medium">Your brain remembered the spelling.</p>
-                    <button onclick="nextWord()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg transform hover:scale-105 transition">CONTINUE ➔</button>
+                    <span class="text-8xl">🏆</span>
+                    <h3 class="text-4xl font-black text-green-600 uppercase mt-6 mb-2 tracking-tight">Perfect!</h3>
+                    <p class="text-gray-500 mb-8 font-medium italic">You recognized the correct spelling!</p>
+                    <button onclick="nextWord()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg transform hover:scale-105 transition uppercase tracking-widest">NEXT WORD ➔</button>
                 </div>
             `;
+            autoScrollNav();
         }
 
         function nextWord() {
             currentIndex++;
-            if (currentIndex < levels[currentLevel].length) {
-                showLookStep();
-            } else {
-                showLevelComplete();
-            }
+            if (currentIndex < levels[currentLevel].length) showLookStep();
+            else showLevelComplete();
         }
 
         function showLevelComplete() {
             const app = document.getElementById('app');
             app.innerHTML = `
                 <div class="bg-white p-12 rounded-[2.5rem] shadow-xl text-center border-t-8 border-indigo-500">
-                    <h2 class="text-3xl font-black text-indigo-800 uppercase mb-2">Level Master!</h2>
-                    <p class="text-gray-500 mb-8 font-medium">You finished ${levels[currentLevel].length} tricky words in this level!</p>
-                    <div class="text-7xl mb-8">🏆</div>
-                    <button onclick="showHome()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-xl hover:bg-indigo-700 shadow-xl transition">FINISH 🏠</button>
+                    <h2 class="text-3xl font-black text-indigo-800 uppercase mb-2">Level Mastered!</h2>
+                    <p class="text-gray-500 mb-8 font-medium italic">Excellent work! You are a spelling star.</p>
+                    <div class="text-8xl mb-10">🥇</div>
+                    <button onclick="showHome()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-xl hover:bg-indigo-700 shadow-xl transition uppercase tracking-widest">BACK TO HUB 🏠</button>
                 </div>
             `;
         }
