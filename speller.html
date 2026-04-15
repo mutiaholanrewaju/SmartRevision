@@ -163,6 +163,32 @@
                 { word: "instrument", chunks: "in-stru-ment", hint: "Musical tool.", distractors: ["instrumant", "instrumant"] },
                 { word: "xylophone", chunks: "xy-lo-phone", hint: "Wooden keys.", distractors: ["zylofone", "xylofone"] },
                 { word: "unconscious", chunks: "un-con-scious", hint: "Not awake.", distractors: ["unconshos", "unconshus"] }
+            ],
+            "Level 5: Everyday & Computer": [
+                { word: "pineapple", chunks: "pine-ap-ple", hint: "A sweet yellow fruit.", distractors: ["pineapul", "pinapple"] },
+                { word: "school", chunks: "school", hint: "Where we go to learn.", distractors: ["skool", "schul"] },
+                { word: "pigeon", chunks: "pi-geon", hint: "A bird often found in cities.", distractors: ["pijin", "pidgon"] },
+                { word: "fruit", chunks: "fruit", hint: "Healthy food from plants.", distractors: ["frut", "froot"] },
+                { word: "exercise", chunks: "ex-er-cise", hint: "Physical activity for health.", distractors: ["exersise", "exercize"] },
+                { word: "bottle", chunks: "bot-tle", hint: "Used for holding water.", distractors: ["bottul", "botle"] },
+                { word: "plate", chunks: "plate", hint: "What we eat our food on.", distractors: ["plet", "plait"] },
+                { word: "envelope", chunks: "en-ve-lope", hint: "Used for sending letters.", distractors: ["envulope", "envelop"] },
+                { word: "flower", chunks: "flow-er", hint: "Beautiful part of a plant.", distractors: ["flowa", "flour"] },
+                { word: "hospital", chunks: "hos-pi-tal", hint: "Where sick people go.", distractors: ["hospitul", "hospital"] },
+                { word: "skirt", chunks: "skirt", hint: "Clothing for girls.", distractors: ["skat", "skirt"] },
+                { word: "kangaroo", chunks: "kan-ga-roo", hint: "Animal that jumps with a pouch.", distractors: ["kangarou", "kangaru"] },
+                { word: "uniform", chunks: "u-ni-form", hint: "What we wear to school.", distractors: ["unifom", "unifarm"] },
+                { word: "carriage", chunks: "car-riage", hint: "Used for carrying things.", distractors: ["carage", "caridge"] },
+                { word: "yacht", chunks: "yacht", hint: "A luxury boat.", distractors: ["yatch", "yot"] },
+                { word: "zebra", chunks: "ze-bra", hint: "Animal with black and white stripes.", distractors: ["zebbra", "zibra"] },
+                { word: "keyboard", chunks: "key-board", hint: "Used for typing on a computer.", distractors: ["keybord", "keeboard"] },
+                { word: "scanner", chunks: "scan-ner", hint: "Copies papers into the computer.", distractors: ["scaner", "scannar"] },
+                { word: "mouse", chunks: "mouse", hint: "Used to click on things.", distractors: ["mause", "mowse"] },
+                { word: "printer", chunks: "prin-ter", hint: "Brings computer work to paper.", distractors: ["printar", "printre"] },
+                { word: "speaker", chunks: "speak-er", hint: "Where sound comes out.", distractors: ["speakar", "speeker"] },
+                { word: "joystick", chunks: "joy-stick", hint: "Used for playing games.", distractors: ["joystik", "joystic"] },
+                { word: "monitor", chunks: "mon-i-tor", hint: "The computer screen.", distractors: ["monitah", "moniter"] },
+                { word: "harddisk", chunks: "hard-disk", hint: "Where the computer saves work.", distractors: ["hardisk", "hard disk"] }
             ]
         };
 
@@ -174,7 +200,7 @@
             app.innerHTML = `
                 <div class="text-center py-6">
                     <h1 class="text-3xl font-black text-green-800 mb-2 uppercase tracking-tight text-balance">SmartSpeller Hub</h1>
-                    <p class="text-gray-600 mb-8 font-medium italic">Improving spellings and visual recognition! 🇳🇬</p>
+                    <p class="text-gray-600 mb-8 font-medium italic">Master 90+ Words with Clear Enunciation! 🇳🇬</p>
                     <div class="space-y-4">
                         ${Object.keys(levels).map(level => {
                             const prog = localStorage.getItem(`prog_${level}`) || 0;
@@ -184,7 +210,7 @@
                                     <h3 class="text-lg font-bold text-gray-800 group-hover:text-green-600 uppercase">${level}</h3>
                                     <p class="text-[10px] text-gray-400 mt-1 uppercase font-black">Progress: ${prog}/${levels[level].length}</p>
                                 </div>
-                                <span class="text-2xl text-green-200 group-hover:text-green-500">➔</span>
+                                <span class="text-2xl text-green-200 group-hover:text-green-500 transition">➔</span>
                             </button>`}).join('')}
                     </div>
                 </div>
@@ -200,8 +226,8 @@
         function speak(text) {
             window.speechSynthesis.cancel(); 
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.85;
-            utterance.pitch = 1;
+            utterance.rate = 0.65; // Slower for clarity
+            utterance.pitch = 0.8; // Lower for clarity
             window.speechSynthesis.speak(utterance);
         }
 
@@ -261,7 +287,7 @@
                             <h1 class="visual-word-text" style="font-size: ${fontSize}">${wordObj.word}</h1>
                         </div>
                         <button onclick="speak('${wordObj.word}')" class="mb-4 bg-green-100 p-4 rounded-full shadow-sm hover:bg-green-200 transition">🔊 Hear Word</button>
-                        <h2 class="text-4xl font-black text-gray-800 mb-2 tracking-tight">${wordObj.word}</h2>
+                        <h2 class="text-4xl font-black text-gray-800 mb-2 tracking-tight capitalize">${wordObj.word}</h2>
                         <div class="flex justify-center gap-2 mb-4 flex-wrap">
                             ${wordObj.chunks.split('-').map(c => `<span class="bg-green-50 px-3 py-1 rounded-lg text-green-700 font-bold border border-green-100 text-lg">${c}</span>`).join('')}
                         </div>
@@ -284,10 +310,10 @@
                 <div class="bg-white p-8 rounded-[2rem] shadow-xl border-t-8 border-yellow-500">
                     ${renderHeader()}
                     <div class="text-center mb-8">
-                        <h2 class="font-black text-gray-800 mb-4 leading-none" style="font-size: ${fontSize}">${wordObj.word}</h2>
+                        <h2 class="font-black text-gray-800 mb-4 leading-none capitalize" style="font-size: ${fontSize}">${wordObj.word}</h2>
                         <p class="text-yellow-700 text-sm font-bold uppercase tracking-widest italic underline underline-offset-4">Step 2: Type the word exactly</p>
                     </div>
-                    <input type="text" id="copy-input" autocomplete="off" class="w-full text-center text-3xl font-black p-4 border-b-4 border-gray-200 focus:border-yellow-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
+                    <input type="text" id="copy-input" autocomplete="off" class="w-full text-center text-3xl font-bold p-4 border-b-4 border-gray-200 focus:border-yellow-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
                     <div id="copy-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Check the letters above!</div>
                     <button onclick="validateCopy()" class="w-full bg-yellow-500 text-white py-4 rounded-2xl font-black text-xl shadow-lg uppercase tracking-widest">CHECK WORD ➔</button>
                 </div>
@@ -321,7 +347,7 @@
                     <div class="text-center mb-6">
                          <p class="text-purple-700 text-sm font-bold uppercase tracking-widest italic underline underline-offset-4">Step 3: Write from memory</p>
                     </div>
-                    <input type="text" id="write-input" autocomplete="off" class="w-full text-center text-3xl font-black p-4 border-b-4 border-gray-200 focus:border-purple-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
+                    <input type="text" id="write-input" autocomplete="off" class="w-full text-center text-3xl font-bold p-4 border-b-4 border-gray-200 focus:border-purple-500 outline-none mb-2 text-gray-700 bg-gray-50 rounded-t-xl" placeholder="...">
                     <div id="write-error" class="text-red-500 font-black text-xs uppercase text-center mb-4 opacity-0 transition-opacity">❌ Try again! Memory test.</div>
                     <button onclick="validateFinal()" class="w-full bg-purple-600 text-white py-4 rounded-2xl font-black text-xl shadow-lg uppercase tracking-widest">CONFIRM 🏁</button>
                 </div>
@@ -348,7 +374,7 @@
                 setTimeout(() => { 
                     input.classList.remove('shake', 'border-red-500');
                     error.style.opacity = '0';
-                    input.focus();
+                    input.focus(); // Text stays, child edits
                 }, 1500);
             }
         }
@@ -367,7 +393,7 @@
                     <div class="text-center mb-8">
                         <span class="text-6xl">👀</span>
                         <h2 class="text-2xl font-black text-gray-800 mt-4 uppercase tracking-tight">Visual Check</h2>
-                        <p class="text-gray-500 text-sm font-bold mt-2">Which one matches the correct spelling?</p>
+                        <p class="text-gray-500 text-sm font-bold mt-2 text-balance">Which one matches the correct spelling?</p>
                         <div id="visual-error" class="text-red-500 font-black text-xs uppercase mt-2 opacity-0 transition-opacity">❌ Incorrect, try again!</div>
                         <button onclick="speak('${wordObj.word}')" class="mt-4 text-red-600 font-black text-[10px] uppercase border border-red-100 px-4 py-2 rounded-full">🔊 Listen Again</button>
                     </div>
