@@ -5,6 +5,440 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Primary 1 IRS Mock Exam - 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .arabic { font-family: 'Amiri', serif; font-size: 1.8rem; direction: rtl; }
+        
+        /* Font size management */
+        .note-text { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: #1e293b; }
+        .exam-text { font-size: 1rem; }
+        
+        .explanation { display: none; margin-top: 0.75rem; padding: 1rem; border-radius: 0.75rem; font-size: 0.9rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; font-weight: 500; }
+        .option-btn:hover:not(:disabled) { border-color: #059669; background-color: #f0fdf4; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
+        .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .active-explanation { display: block !important; }
+        
+        .gap-input { border-bottom: 2px solid #059669; outline: none; padding: 0 5px; font-weight: 700; color: #065f46; background: transparent; text-align: center; }
+        .gap-input:focus { border-color: #10b981; }
+        
+        .tab-active { border-bottom: 4px solid #059669; color: #065f46; font-weight: 800; }
+        .tab-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .topic-box {
+            border: 2px solid #d1fae5;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        ol { list-style-type: decimal !important; margin-left: 2rem !important; padding-left: 0.5rem !important; }
+        li { margin-bottom: 0.5rem; display: list-item !important; }
+        li::marker { font-weight: 800; color: #059669; }
+    </style>
+    <script src="/_vercel/insights/script.js"></script>
+</head>
+<body class="pb-20">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-emerald-100 px-4 py-4 sticky top-0 z-50 shadow-sm text-center">
+        <div class="max-w-4xl mx-auto nav-grid">
+            <div class="flex justify-start">
+                <a href="index.html" class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1 hover:bg-emerald-100 transition">
+                   🏠 Home
+                </a>
+            </div>
+            <div class="flex justify-center px-2">
+                <span class="font-black text-emerald-700 uppercase tracking-tight text-xs leading-tight">Islamic Studies</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-[10px] font-black uppercase">P1 Mock</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <!-- TABS SYSTEM -->
+        <div class="flex bg-white rounded-2xl shadow-sm mb-8 overflow-hidden border border-gray-100">
+            <button id="examTabBtn" onclick="switchTab('exam')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest tab-active transition-all">📝 Exam</button>
+            <button id="studyTabBtn" onclick="switchTab('study')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest text-gray-400 transition-all border-l border-gray-50 flex items-center justify-center gap-2">
+                <span id="lockIcon" class="hidden text-xs">🔒</span> 📖 Study Notes
+            </button>
+        </div>
+
+        <!-- STUDY NOTES SECTION -->
+        <div id="studySection" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-emerald-50 mb-8">
+                <h2 class="text-2xl font-black text-emerald-900 uppercase mb-8 border-b-2 border-emerald-100 pb-3">📖 Revision Notes</h2>
+                
+                <div class="space-y-6 note-text">
+                    
+                    <!-- 1. Arabic Alphabet -->
+                    <div class="topic-box border-emerald-200">
+                        <h3 class="font-black text-emerald-700 text-sm uppercase mb-3 underline decoration-emerald-100 underline-offset-4">1. Arabic Alphabet with Object</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-base">
+                            <ol>
+                                <li><span class="arabic">ا</span> Abu - A father</li>
+                                <li><span class="arabic">ب</span> Babun - A door</li>
+                                <li><span class="arabic">ت</span> Tamarun - A fruit</li>
+                                <li><span class="arabic">ث</span> Thawbun - A dress</li>
+                                <li><span class="arabic">ج</span> Jamalun - A camel</li>
+                                <li><span class="arabic">ح</span> Habbatu - A seed</li>
+                                <li><span class="arabic">خ</span> Kharufun - A sheep</li>
+                                <li><span class="arabic">د</span> Daftarun - An exercise book</li>
+                                <li><span class="arabic">ذ</span> Dhibun - A wolf</li>
+                                <li><span class="arabic">ر</span> Rajulun - A man</li>
+                                <li><span class="arabic">ز</span> Zujatun - A bottle</li>
+                                <li><span class="arabic">س</span> Sayaratun - A car</li>
+                                <li><span class="arabic">ش</span> Shamsun - A sun</li>
+                                <li><span class="arabic">ص</span> Sahnun - A plate</li>
+                            </ol>
+                            <ol start="15">
+                                <li><span class="arabic">ض</span> Difdaun - A frog</li>
+                                <li><span class="arabic">ط</span> Tayrun - A bird</li>
+                                <li><span class="arabic">ظ</span> Zarf - An envelope</li>
+                                <li><span class="arabic">ع</span> Aynun - An eye</li>
+                                <li><span class="arabic">غ</span> Ghurfatun - A room</li>
+                                <li><span class="arabic">ف</span> Farun - A rat</li>
+                                <li><span class="arabic">ق</span> Qubahatun - A hat</li>
+                                <li><span class="arabic">ك</span> kalbun - A dog</li>
+                                <li><span class="arabic">ل</span> Libasun - A dress</li>
+                                <li><span class="arabic">م</span> Mimhatun - An eraser</li>
+                                <li><span class="arabic">ن</span> Nam-mum - Sleep</li>
+                                <li><span class="arabic">و</span> Wardun - A rose flower</li>
+                                <li><span class="arabic">ه</span> Hirrun - A cat</li>
+                                <li><span class="arabic">ى</span> Yadun - A hand</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- 2. Suratul Nas -->
+                    <div class="topic-box border-emerald-400">
+                        <h3 class="font-black text-emerald-800 text-sm uppercase mb-3">2. Suratul Nas (Quran 114)</h3>
+                        <p class="text-xs font-black text-emerald-600 mb-2 uppercase tracking-widest italic border-b pb-1 inline-block">The Verses:</p>
+                        <ol class="mb-6 font-bold italic text-emerald-900">
+                            <li>Qul audhu birabi-n-Nas</li>
+                            <li>Maliki-n-Nas</li>
+                            <li>ILLahi-n-Nas</li>
+                            <li>Min sharri-l-waswasil-khanas</li>
+                            <li>Aladhi yuwas wisu-fi-suduri-n-nas</li>
+                            <li>Minal jinnat wa Nas</li>
+                        </ol>
+                        
+                        <p class="text-xs font-black text-emerald-600 mb-2 uppercase tracking-widest italic border-b pb-1 inline-block">Translation / Meaning:</p>
+                        <ol class="mb-6 text-base">
+                            <li>Say, I seek refuge with the lord of mankind</li>
+                            <li>The king of mankind</li>
+                            <li>The God of mankind</li>
+                            <li>From the mischief of the whisper of evil</li>
+                            <li>Who whisper into the heart of man</li>
+                            <li>From among the Jinn and Men</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-gray-400 mb-2 uppercase tracking-widest">Lessons from the surah:</p>
+                        <ol class="mb-4 text-base">
+                            <li>We ask Allah to protect us</li>
+                            <li>Allah is the king who controls everyone</li>
+                            <li>Allah is the king who controls everything</li>
+                            <li>Allah is the only God we worship</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-gray-400 mb-2 uppercase tracking-widest">When to recite:</p>
+                        <ol class="text-base">
+                            <li>When praying</li>
+                            <li>When travelling</li>
+                            <li>When in danger or afraid</li>
+                        </ol>
+                    </div>
+
+                    <!-- 3. At-Taharah -->
+                    <div class="topic-box border-blue-200">
+                        <h3 class="font-black text-blue-800 text-sm uppercase mb-3">3. At-Taharah (Cleanliness)</h3>
+                        <ol>
+                            <li>Cleanliness is part of the teachings of Islam.</li>
+                            <li>A Muslim must always be clean.</li>
+                            <li>His clothes, house, class, mosque and compound must be clean.</li>
+                         </ol>   
+                    
+                        <p class="text-xs font-black text-yellow-600 mb-2 uppercase tracking-widest italic border-b pb-1 inline-block">Importance of Cleanliness</p>
+                        <ol>
+                            <li>Allah is clean, one must be clean to worship him.</li>
+                            <li>Cleanliness teaches one to have good health.</li>
+                            <li>Cleanliness removes bad smells from the body and surroundings.</li>
+                            <li>A Muslim must take his bath everyday and brush teeth.</li>
+                        </ol>
+                    </div>
+
+                    <!-- 4. Suratul Falaq -->
+                    <div class="topic-box border-yellow-300">
+                        <h3 class="font-black text-yellow-800 text-sm uppercase mb-3">4. Suratul Falaq (Quran 113)</h3>
+                        <p class="text-xs font-black text-yellow-600 mb-2 uppercase tracking-widest italic border-b pb-1 inline-block">The Verses:</p>
+                        <ol class="mb-6 font-bold italic text-yellow-900">
+                            <li>Qul Audhu birabbi-l-falaq</li>
+                            <li>Min sharri ma khalaq</li>
+                            <li>Wa min sharr ghasiquin idha waqab</li>
+                            <li>Wa min sharri-n-fathatin filhuqad</li>
+                            <li>Wa min sharri hasidin idha hasad</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-yellow-600 mb-2 uppercase tracking-widest italic border-b pb-1 inline-block">Meaning of Suratul Falaq:</p>
+                        <ol class="mb-6 text-base">
+                            <li>Say, I seek refuge from the lord of the dawn</li>
+                            <li>From the mischief of what he created</li>
+                            <li>And from the mischief of darkness it envelops</li>
+                            <li>And from the mischief of those who practice secret acts</li>
+                            <li>And from the mischief of the envious one as he practices envy</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-gray-400 mb-2 uppercase tracking-widest">When to recite:</p>
+                        <ol class="text-base">
+                            <li>During Salat</li>
+                            <li>When in Danger or Afraid</li>
+                        </ol>
+                    </div>
+
+                    <!-- 5. Al-Wudu -->
+                    <div class="topic-box border-emerald-500 bg-emerald-50/30">
+                        <h3 class="font-black text-emerald-900 text-sm uppercase mb-3">5. Steps of Al-Wudu</h3>
+                        <p class="text-sm mb-3 italic">Al-wudu is done by washing parts that are usually exposed.</p>
+                        <ol>
+                            <li>Wash the hands</li>
+                            <li>Rinse the mouth</li>
+                            <li>Clean the nose</li>
+                            <li>Wash the face</li>
+                            <li>Wash the arms up to the elbows</li>
+                            <li>Wipe the head and ears</li>
+                            <li>Wash the feet</li>
+                        </ol>
+                    </div>
+
+                    <!-- 6. Obedience -->
+                    <div class="topic-box border-indigo-200">
+                        <h3 class="font-black text-indigo-800 text-sm uppercase mb-2">6. Obedience to Allah & Parents</h3>
+                        <p class="mb-4 text-base italic">Obedience means doing what you are told.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-xs font-black text-indigo-400 mb-2 uppercase">How to Obey Allah:</p>
+                                <ol class="text-sm">
+                                    <li>Praying (Solat)</li>
+                                    <li>Speaking the truth</li>
+                                    <li>Being kind to others</li>
+                                    <li>Avoiding bad things</li>
+                                </ol>
+                            </div>
+                            <div>
+                                <p class="text-xs font-black text-indigo-400 mb-2 uppercase">How to Obey Parents:</p>
+                                <ol class="text-sm">
+                                    <li>Listening to them</li>
+                                    <li>Greeting them</li>
+                                    <li>Respecting and not arguing</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button onclick="switchTab('exam')" class="mt-10 w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-emerald-700 transition">Start Practice Exam ➔</button>
+            </div>
+        </div>
+
+        <!-- PRACTICE EXAM SECTION -->
+        <div id="examSection" class="exam-text">
+            
+            <!-- Section A -->
+            <div class="mb-12">
+                <div class="bg-emerald-700 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm tracking-widest">Section A: Objectives</div>
+                <div id="objContainer" class="space-y-6"></div>
+            </div>
+
+            <!-- Section B -->
+            <div class="mb-12">
+                <div class="bg-emerald-900 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm tracking-widest">Section B: Fill in the gaps</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-emerald-50 space-y-8">
+                    <p class="text-[10px] text-gray-400 italic mb-4 uppercase font-black">Type exact words from the notes. (Not case-sensitive)</p>
+                    
+                    <div class="question-block-gap" data-answer="mankind">
+                        1. Allah is the Lord of <input type="text" class="gap-input w-28" onchange="checkGap(this)">.
+                    </div>
+                    
+                    <div class="question-block-gap" data-answer="Barakah">
+                        2. Obedience to parents brings <input type="text" class="gap-input w-28" onchange="checkGap(this)"> (Blessing).
+                    </div>
+
+                    <div class="question-block-gap" data-answer="dawn">
+                        3. Suratul Falaq means Lord of the <input type="text" class="gap-input w-24" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="exposed">
+                        4. Wudu washes body parts that are usually <input type="text" class="gap-input w-28" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="bath">
+                        5. A Muslim must take his <input type="text" class="gap-input w-20" onchange="checkGap(this)"> everyday.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section C -->
+            <div class="mb-12">
+                <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section C: Written Assessment</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    <div>
+                        <p class="font-bold mb-2">1. List three (3) steps of Al-Wudu from your notes.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-emerald-400 exam-text" placeholder="1... 2... 3..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">2. What are two (2) ways we can obey our parents?</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-emerald-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-10">
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-black uppercase text-xs hover:bg-gray-300 transition shadow-inner">Finish & Reset Exam 🔄</button>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            © 2026 SmartRevision Hub | Lagos, Nigeria
+        </footer>
+    </div>
+
+    <script>
+        const objQuestions = [
+            { q: "What does Abu mean?", options: ["Father", "Mother", "Brother"], correct: 0, note: "Abu means A father in Arabic." },
+            { q: "Suratul Nas is chapter ______ in the Quran.", options: ["112", "113", "114"], correct: 2, note: "Suratul Nas is the 114th chapter of the Holy Quran." },
+            { q: "Suratul Falaq can be recited when one is ________.", options: ["Eating", "Sleeping", "In danger or afraid"], correct: 2, note: "We recite Surahs for protection when afraid or in danger." },
+            { q: "Cleanliness is part of the teachings of ________.", options: ["Science", "Islam", "History"], correct: 1, note: "At-Taharah (Cleanliness) is fundamental in Islam." },
+            { q: "Which of these is a step in Wudu?", options: ["Washing the feet", "Running", "Dancing"], correct: 0, note: "Washing the feet is a vital step in Al-Wudu." },
+            { q: "Obedience means doing ________.", options: ["What you want", "What you are told", "Nothing"], correct: 1, note: "Obedience is following the instructions of Allah and Parents." },
+            { q: "Daftarun means ________.", options: ["Pen", "Eraser", "Exercise book"], correct: 2, note: "Daftarun is the Arabic word for Exercise book." }
+        ];
+
+        let examStarted = false;
+
+        function switchTab(mode) {
+            if (mode === 'study' && examStarted) {
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('animate-bounce');
+                setTimeout(() => btn.classList.remove('animate-bounce'), 500);
+                return;
+            }
+            const studySec = document.getElementById('studySection');
+            const examSec = document.getElementById('examSection');
+            const studyBtn = document.getElementById('studyTabBtn');
+            const examBtn = document.getElementById('examTabBtn');
+            if (mode === 'study') {
+                studySec.classList.remove('hidden'); examSec.classList.add('hidden');
+                studyBtn.classList.add('tab-active'); studyBtn.classList.remove('text-gray-400');
+                examBtn.classList.remove('tab-active'); examBtn.classList.add('text-gray-400');
+            } else {
+                studySec.classList.add('hidden'); examSec.classList.remove('hidden');
+                examBtn.classList.add('tab-active'); examBtn.classList.remove('text-gray-400');
+                studyBtn.classList.remove('tab-active'); studyBtn.classList.add('text-gray-400');
+            }
+            window.scrollTo(0,0);
+        }
+
+        function lockNotes() {
+            if (!examStarted) {
+                examStarted = true;
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('tab-locked');
+                document.getElementById('lockIcon').classList.remove('hidden');
+            }
+        }
+
+        function renderObjQuiz() {
+            const container = document.getElementById('objContainer');
+            objQuestions.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-emerald-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
+                    <div class="space-y-2">${item.options.map((opt, i) => `<button class="option-btn" onclick="checkObj(this, ${index}, ${i})">${opt}</button>`).join('')}</div>
+                    <div id="obj-note-${index}" class="explanation"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        window.checkObj = function(btn, qIdx, optIdx) {
+            lockNotes();
+            const buttons = btn.parentElement.querySelectorAll('button');
+            const noteDiv = document.getElementById(`obj-note-${qIdx}`);
+            buttons.forEach(b => b.disabled = true);
+            if (optIdx === objQuestions[qIdx].correct) {
+                btn.classList.add('correct');
+                score++;
+                document.getElementById('scoreTracker').innerText = score;
+                noteDiv.innerHTML = `<span class="font-bold text-emerald-700 uppercase text-xs">✔ Correct!</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-emerald-50');
+            } else {
+                btn.classList.add('wrong');
+                buttons[objQuestions[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-red-700 uppercase text-xs">✘ Review Note:</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
+            }
+        };
+
+        window.checkGap = function(input) {
+            lockNotes();
+            const parent = input.parentElement;
+            const correctAns = parent.dataset.answer.toLowerCase();
+            const userAns = input.value.trim().toLowerCase();
+            if (userAns === correctAns) {
+                input.style.color = "#10b981";
+                input.style.borderColor = "#10b981";
+            } else {
+                input.style.color = "#ef4444";
+                input.style.borderColor = "#ef4444";
+            }
+        };
+
+        renderObjQuiz();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary 1 IRS Mock Exam - 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -72,11 +506,11 @@
     </style>
 
        <!-- Vercel Web Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
+    <!-- <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 text-red-600 font-black text-xl italic">
                 <span>🛡️ SmartRevision</span>
@@ -92,9 +526,9 @@
             </div>
             <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
         </div>
-    </nav>
+    </nav> --> -->
     
-<div class="max-w-4xl mx-auto px-4 py-6 no-print">
+<!-- <div class="max-w-4xl mx-auto px-4 py-6 no-print">
     <div class="bg-emerald-800 p-6 rounded-2xl shadow-xl text-white mb-6">
         <div class="flex justify-between items-center">
             <div>
@@ -107,11 +541,11 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
-<div class="exam-sheet">
+<!-- <div class="exam-sheet">
     <!-- Header -->
-    <div class="text-center border-b-4 border-double border-emerald-900 pb-6 mb-8">
+    <!-- <div class="text-center border-b-4 border-double border-emerald-900 pb-6 mb-8">
         <h1 class="text-3xl font-black uppercase tracking-tighter text-emerald-900">Islamic Religious Studies</h1>
         <h2 class="text-xl font-bold text-gray-500">Lagos State Unified Scheme Standard</h2>
         <div class="flex justify-between mt-6 text-sm font-black text-emerald-700 uppercase">
@@ -119,10 +553,10 @@
             <span>Term: Second Term</span>
             <span>Time: 1 Hour 45 Mins</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- Student Info -->
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+    <!-- <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-emerald-50 p-6 rounded-xl border border-emerald-100">
         <div class="w-full">
             <label class="block text-xs font-black text-emerald-600 uppercase mb-1">Full Name of Student</label>
             <input type="text" placeholder="Enter name here..." class="w-full text-xl font-bold border-none bg-transparent placeholder-emerald-200">
@@ -133,31 +567,30 @@
                 <span id="finalScore" class="text-4xl font-black text-emerald-600">0</span> <span class="text-gray-400 font-bold">/ 100</span>
             </div>
         </div>
-    </div>
+    </div> --> -->
 
     <!-- Section A: General Objectives -->
-    <div class="mb-16">
+    <!-- <div class="mb-16">
         <div class="bg-emerald-900 text-white px-6 py-2 inline-block rounded-r-full font-bold shadow-md mb-8 uppercase tracking-widest text-sm">Section A: General Knowledge (40 Marks)</div>
         
         <div class="space-y-10" id="objectives">
             <!-- 20 Comprehensive questions -->
-            <div class="question-block" data-correct="c">
+            <!-- <div class="question-block" data-correct="c">
                 <p class="font-bold text-lg mb-4">1. What is the meaning of the word <span class="arabic">تَمَرٌ</span> (Tamarun)?</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Seed</button>
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) Dress</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) A fruit</button>
-                </div>
-            </div>
-
+                </div> -->
+            <!-- </div>
             <div class="question-block" data-correct="b">
                 <p class="font-bold text-lg mb-4">2. <span class="arabic">ثَوْبٌ</span> (Thawbun) means ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Father</button>
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A dress</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) A camel</button>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div>
 
             <div class="question-block" data-correct="a">
                 <p class="font-bold text-lg mb-4">3. <span class="arabic">خَرُوفٌ</span> (Kharufun) means ________.</p>
@@ -166,8 +599,8 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A wolf</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) A cat</button>
                 </div>
-            </div>
-
+            </div> -->
+<!-- 
             <div class="question-block" data-correct="b">
                 <p class="font-bold text-lg mb-4">4. <span class="arabic">ذِئْبٌ</span> (Dhibun) means ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -175,34 +608,34 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A wolf</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) A rat</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="c">
+            <!-- <div class="question-block" data-correct="c">
                 <p class="font-bold text-lg mb-4">5. What is the meaning of <span class="arabic">شَمْسٌ</span> (Shamsun)?</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Moon</button>
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) Star</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) The sun</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="a">
+            <!-- <div class="question-block" data-correct="a">
                 <p class="font-bold text-lg mb-4">6. <span class="arabic">صَحْنٌ</span> (Sahnun) means ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) A plate</button>
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A bottle</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) An eraser</button>
                 </div>
-            </div>
-
+            </div> -->
+<!-- 
             <div class="question-block" data-correct="b">
                 <p class="font-bold text-lg mb-4">7. <span class="arabic">طَيْرٌ</span> (Tayrun) means ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) A frog</button>
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A bird</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) An eye</button>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div>
 
             <div class="question-block" data-correct="c">
                 <p class="font-bold text-lg mb-4">8. What is the meaning of <span class="arabic">عَيْنٌ</span> (Aynun)?</p>
@@ -211,9 +644,9 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A room</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) An eye</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="b">
+            <!-- <div class="question-block" data-correct="b">
                 <p class="font-bold text-lg mb-4">9. <span class="arabic">مِمْحاةٌ</span> (Mimhatun) means ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) A pencil</button>
@@ -229,9 +662,9 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) A rose flower</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) A car</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="a">
+            <!-- <div class="question-block" data-correct="a">
                 <p class="font-bold text-lg mb-4">11. <span class="text-emerald-700">At-Taharah</span> means ________ in Islam.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Cleanliness</button>
@@ -246,9 +679,9 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) Bad smells</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) Kindness</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="a">
+            <!-- <div class="question-block" data-correct="a">
                 <p class="font-bold text-lg mb-4">13. Suratul Falaq says we should seek refuge from the Lord of the ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Dawn</button>
@@ -280,9 +713,9 @@
                     <button class="option-btn" onclick="selectOption(this, 'b')">(b) Danger</button>
                     <button class="option-btn" onclick="selectOption(this, 'c')">(c) Blessing (Barakah)</button>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="question-block" data-correct="b">
+            <!-- <div class="question-block" data-correct="b">
                 <p class="font-bold text-lg mb-4">17. One way to obey Allah is by ________.</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <button class="option-btn" onclick="selectOption(this, 'a')">(a) Arguing</button>
@@ -315,10 +748,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Section B: The Primary Test Questions (Exact as provided) -->
-    <div class="mb-16 bg-slate-50 p-8 rounded-3xl border-2 border-emerald-100 shadow-inner">
+    <!-- <div class="mb-16 bg-slate-50 p-8 rounded-3xl border-2 border-emerald-100 shadow-inner">
         <div class="bg-emerald-700 text-white px-6 py-1 inline-block rounded-full font-bold shadow-md mb-8 uppercase text-xs">Section B: Standard Test Questions (30 Marks)</div>
         
         <div class="space-y-10" id="main-test">
@@ -411,14 +844,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Section C: Practical & Written -->
-    <div class="mb-12">
+    <!-- <div class="mb-12">
         <div class="bg-emerald-900 text-white px-6 py-2 inline-block rounded-r-full font-bold shadow-md mb-8 uppercase text-sm">Section C: Written & Theory (30 Marks)</div>
-        
+         -->
         <!-- Wudu Sequencing -->
-        <div class="mb-10 bg-emerald-50 p-6 rounded-2xl border-2 border-emerald-100">
+        <!-- <div class="mb-10 bg-emerald-50 p-6 rounded-2xl border-2 border-emerald-100">
             <h4 class="font-black text-emerald-800 mb-4 uppercase text-xs tracking-widest">Task 1: Sequence of Al-Wudu</h4>
             <p class="text-xs text-emerald-600 mb-4">Write 1, 2, 3, 4 to show the order of the first 4 steps of Wudu.</p>
             <div class="space-y-3">
@@ -430,8 +863,8 @@
                     <input type="text" class="w-10 font-bold text-emerald-700 border-none bg-slate-100 rounded text-center" data-answer="1">
                     <span class="font-semibold">Wash the hands</span>
                 </div>
-                <div class="flex items-center gap-4 bg-white p-3 rounded-lg border">
-                    <input type="text" class="w-10 font-bold text-emerald-700 border-none bg-slate-100 rounded text-center" data-answer="2">
+                <div class="flex items-center gap-4 bg-white p-3 rounded-lg border"> -->
+                    <!-- <input type="text" class="w-10 font-bold text-emerald-700 border-none bg-slate-100 rounded text-center" data-answer="2">
                     <span class="font-semibold">Rinse the mouth</span>
                 </div>
                 <div class="flex items-center gap-4 bg-white p-3 rounded-lg border">
@@ -439,10 +872,10 @@
                     <span class="font-semibold">Wash the face</span>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Matching Objects -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+        <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
             <div class="border-2 border-slate-100 p-4 rounded-xl">
                 <h4 class="font-bold text-gray-500 mb-4 uppercase text-xs">Task 2: Alphabet Meaning</h4>
                 <div class="space-y-4">
@@ -470,10 +903,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Section D: Oral Recitation -->
-    <div class="bg-emerald-900 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden">
+    <!-- <div class="bg-emerald-900 p-8 rounded-3xl text-white shadow-xl relative overflow-hidden">
         <div class="relative z-10">
             <h3 class="font-black text-emerald-100 mb-2 uppercase tracking-widest text-sm">Section D: Oral Practical (Recitation)</h3>
             <p class="text-xs text-emerald-200 mb-6 italic opacity-80">Parent: Please verify the student can recite these verses with Tajweed.</p>
@@ -489,25 +922,25 @@
             </div>
         </div>
         <!-- Decorative Circle -->
-        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-700/30 rounded-full"></div>
+        <!-- <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-700/30 rounded-full"></div>
     </div>
 
     <!-- Final Submission -->
-    <div class="no-print mt-12 text-center">
+    <!-- <div class="no-print mt-12 text-center">
         <button onclick="submitExam()" class="bg-emerald-800 text-white px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-900 transition shadow-2xl transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 mx-auto">
             Submit Mock Exam 🏁
         </button>
-    </div>
+    </div> -->
 
     <!-- Result Banner -->
-    <div id="resultsBanner" class="hidden mt-8 p-12 bg-emerald-600 text-white rounded-3xl text-center shadow-2xl animate-pulse">
+    <!-- <div id="resultsBanner" class="hidden mt-8 p-12 bg-emerald-600 text-white rounded-3xl text-center shadow-2xl animate-pulse">
         <h2 class="text-4xl font-black mb-2 tracking-tighter">ALHAMDULILLAH! 🌟</h2>
         <p class="text-emerald-100 text-lg font-medium">You have completed your IRS mock preparation.</p>
         <div class="mt-4 text-xs bg-emerald-800/50 inline-block px-4 py-2 rounded-full font-black uppercase tracking-widest">Review your corrections below</div>
     </div>
-</div>
+</div>  -->
 
-<script>
+<!-- <script>
     function selectOption(button, value) {
         const parent = button.closest('.question-block');
         const buttons = parent.querySelectorAll('.option-btn');
@@ -585,11 +1018,11 @@
         document.getElementById('scoreDisplay').classList.add('hidden');
         document.getElementById('resultsBanner').classList.add('hidden');
     }
-</script>
+</script> -->
 
-</body>
+<!-- </body>
     <!-- Footer -->
-    <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
+    <!-- <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
         <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah</p>
     </footer>
-</html>
+</html> --> --> -->
