@@ -1,5 +1,389 @@
- 
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Education | SmartRevision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Font size management */
+        .note-text { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: #1e293b; }
+        .exam-text { font-size: 1rem; }
+        
+        .explanation { display: none; margin-top: 0.75rem; padding: 1rem; border-radius: 0.75rem; font-size: 0.9rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; font-weight: 500; }
+        .option-btn:hover:not(:disabled) { border-color: #ef4444; background-color: #fef2f2; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
+        .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .active-explanation { display: block !important; }
+        
+        .gap-input { border-bottom: 2px solid #cbd5e1; outline: none; padding: 0 5px; font-weight: 700; color: #b91c1c; background: transparent; text-align: center; }
+        .gap-input:focus { border-color: #ef4444; }
+        
+        .tab-active { border-bottom: 4px solid #ef4444; color: #b91c1c; font-weight: 800; }
+        .tab-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* Topic Demarcation Styles */
+        .topic-box {
+            border: 2px solid #e2e8f0;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        
+        /* Force numbered list visibility for children */
+        ol { 
+            list-style-type: decimal !important; 
+            margin-left: 2rem !important; 
+            padding-left: 0.5rem !important;
+        }
+        li { 
+            margin-bottom: 0.5rem; 
+            padding-left: 0.5rem; 
+            display: list-item !important;
+        }
+        li::marker {
+            font-weight: 800;
+            color: #ef4444;
+        }
+    </style>
+    <script src="/_vercel/insights/script.js"></script>
+</head>
+<body class="pb-20">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-red-100 px-4 py-4 sticky top-0 z-50 shadow-sm text-center">
+        <div class="max-w-4xl mx-auto nav-grid">
+            <div class="flex justify-start">
+                <a href="index.html" class="bg-red-50 text-red-600 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1 hover:bg-red-100 transition">
+                   🏠 Home
+                </a>
+            </div>
+            <div class="flex justify-center px-2">
+                <span class="font-black text-red-600 uppercase tracking-tight text-xs leading-tight">Security Education</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-[10px] font-black uppercase">P1 Mock</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <!-- TABS SYSTEM -->
+        <div class="flex bg-white rounded-2xl shadow-sm mb-8 overflow-hidden border border-gray-100">
+            <button id="examTabBtn" onclick="switchTab('exam')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest tab-active transition-all">📝 Exam</button>
+            <button id="studyTabBtn" onclick="switchTab('study')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest text-gray-400 transition-all border-l border-gray-50 flex items-center justify-center gap-2">
+                <span id="lockIcon" class="hidden text-xs">🔒</span> 📖 Study Notes
+            </button>
+        </div>
+
+        <!-- STUDY NOTES SECTION -->
+        <div id="studySection" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-red-50 mb-8">
+                <h2 class="text-2xl font-black text-red-900 uppercase mb-8 border-b-2 border-red-100 pb-3">📖 Revision Notes</h2>
+                
+                <div class="space-y-6 note-text">
+                    
+                    <!-- Security Precautions Definition -->
+                    <div class="topic-box border-red-200">
+                        <h3 class="font-black text-red-600 text-sm uppercase mb-3">Security Precautions</h3>
+                        <p>Security precautions are the steps taken to make us free and safe from all dangers or arms.</p>
+                    </div>
+
+                    <!-- Types of security Precaution -->
+                    <div class="topic-box">
+                        <h3 class="font-black text-gray-800 text-sm uppercase mb-3">Types of security Precaution</h3>
+                        <ol>
+                            <li>Security precaution at home</li>
+                            <li>Security precaution at office</li>
+                            <li>Security precaution at school</li>
+                            <li>Personal security precautions</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sources of Danger -->
+                    <div class="topic-box border-orange-200">
+                        <h3 class="font-black text-red-600 text-sm uppercase mb-3">Sources of Danger</h3>
+                        <p class="mb-3 font-semibold">Sources of danger means what can cause danger to man.</p>
+                        <p class="text-gray-500 text-sm mb-2 uppercase font-bold italic tracking-tighter">Examples of sources of danger:</p>
+                        <ol>
+                            <li>Talking to strangers</li>
+                            <li>Fire out break</li>
+                            <li>Road accident</li>
+                            <li>Sharp objects eg Knife</li>
+                            <li>Wet floor</li>
+                            <li>Unsafe food</li>
+                        </ol>
+                    </div>
+
+                    <!-- Security precaution on the road -->
+                    <div class="topic-box border-blue-200">
+                        <h3 class="font-black text-blue-800 text-sm uppercase mb-3">Security precaution on the road</h3>
+                        <ol>
+                            <li>Know your safety road signal</li>
+                            <li>Obey traffic light</li>
+                            <li>Be careful while crossing the road</li>
+                            <li>Never run on busy road</li>
+                            <li>Look right and left before crossing the road</li>
+                            <li>Know and follow the road signs</li>
+                        </ol>
+                    </div>
+
+                    <!-- Home security precaution -->
+                    <div class="topic-box border-emerald-200">
+                        <h3 class="font-black text-emerald-800 text-sm uppercase mb-2">Home security precaution</h3>
+                        <p class="mb-3 text-emerald-600 text-base font-bold italic">Home is a place we live</p>
+                        <p class="text-gray-500 text-sm mb-2 uppercase font-bold italic tracking-tighter">Security Precaution at home:</p>
+                        <ol>
+                            <li>Lock the doors and windows</li>
+                            <li>Keep the environment clean</li>
+                            <li>Always be watchful and careful</li>
+                            <li>Call for help when needed</li>
+                            <li>Turn off electrical appliances when not used</li>
+                            <li>Teach children on how to be safe at home</li>
+                        </ol>
+                    </div>
+
+                    <!-- Security precaution at office -->
+                    <div class="topic-box border-indigo-200">
+                        <h3 class="font-black text-indigo-800 text-sm uppercase mb-2">Security precaution at office</h3>
+                        <p class="mb-3 text-indigo-600 text-base font-bold italic">An office is a place of work</p>
+                        <p class="text-gray-500 text-sm mb-2 uppercase font-bold italic tracking-tighter">Security precaution at office:</p>
+                        <ol>
+                            <li>The office compound should be fenced and gated</li>
+                            <li>There should be a security at the office gate</li>
+                            <li>Staff should not share their identity card</li>
+                            <li>Clearance should be given to any visitors before entering the office premises</li>
+                            <li>Installation of CCTV camera for security purpose.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Personal security -->
+                    <div class="topic-box border-amber-200">
+                        <h3 class="font-black text-amber-800 text-sm uppercase mb-2">Personal security</h3>
+                        <p class="mb-3 font-semibold">Personal security is an extra caution taken to ensure your personal safety at all time.</p>
+                        <p class="text-gray-500 text-sm mb-2 uppercase font-bold italic tracking-tighter">Examples of personal security tips:</p>
+                        <ol>
+                            <li>Think fast and act smart</li>
+                            <li>Be vigilant</li>
+                            <li>Report strange and suspicious movement</li>
+                            <li>Avoid night walk or travelling</li>
+                            <li>Always tell your loved ones about your movement</li>
+                            <li>Be familiar with your environment and neighbours</li>
+                        </ol>
+                    </div>
+
+                    <!-- Security precaution in the school -->
+                    <div class="topic-box border-red-200">
+                        <h3 class="font-black text-red-800 text-sm uppercase mb-3">Security precaution in the school</h3>
+                        <ol>
+                            <li>Do not play with sharp objects</li>
+                            <li>Always think fast and act smart</li>
+                            <li>Report any form of bully</li>
+                            <li>Obey the school rules and regulation</li>
+                            <li>If you see something, say it</li>
+                        </ol>
+                    </div>
+
+                    <!-- Precaution in the car/buses -->
+                    <div class="topic-box border-orange-200">
+                        <h3 class="font-black text-orange-800 text-sm uppercase mb-3">Precaution in the car/buses</h3>
+                        <ol>
+                            <li>Do not sit in the front</li>
+                            <li>Always use seat belt</li>
+                            <li>Do not share seat belt</li>
+                            <li>Do not play in the car</li>
+                            <li>Do not stand while the bus is moving</li>
+                            <li>Do not wait at the door</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+                <button onclick="switchTab('exam')" class="mt-10 w-full bg-red-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-red-700 transition">Start Practice Exam ➔</button>
+            </div>
+        </div>
+
+        <!-- PRACTICE EXAM SECTION -->
+        <div id="examSection" class="exam-text">
+            
+            <!-- SECTION A -->
+            <div class="mb-12">
+                <div class="bg-red-600 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase">Section A: Objectives</div>
+                <div id="objContainer" class="space-y-6"></div>
+            </div>
+
+            <!-- SECTION B -->
+            <div class="mb-12">
+                <div class="bg-red-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase">Section B: Fill in the gaps</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    <p class="text-xs text-gray-400 italic mb-4">Type the exact missing words from your notes. (Not case-sensitive)</p>
+                    
+                    <div class="question-block-gap" data-answer="home">
+                        1. <input type="text" class="gap-input w-24" onchange="checkGap(this)"> is a place we live.
+                    </div>
+                    
+                    <div class="question-block-gap" data-answer="Fire out break">
+                        2. A major source of danger is a <input type="text" class="gap-input w-40" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="vigilant">
+                        3. To ensure personal safety, we must be <input type="text" class="gap-input w-32" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="CCTV">
+                        4. For office security, we should install <input type="text" class="gap-input w-20" onchange="checkGap(this)"> cameras.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="seat belt">
+                        5. In a bus, always use your <input type="text" class="gap-input w-32" onchange="checkGap(this)">.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION C -->
+            <div class="mb-12">
+                <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase">Section C: Written Assessment</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    <div>
+                        <p class="font-bold mb-2">1. Mention three sources of danger mentioned in your notes.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-red-400 exam-text" placeholder="1... 2... 3..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">2. What should you do before crossing the road?</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-red-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">3. List two security precautions at home.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-red-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-10">
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-black uppercase text-xs hover:bg-gray-300 transition">Finish & Reset Exam 🔄</button>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            © 2026 SmartRevision Hub | Mutiat Olanrewaju
+        </footer>
+    </div>
+
+    <script>
+        const objQuestions = [
+            { q: "What are security precautions?", options: ["Steps to stay safe from all dangers", "Playing with strangers", "Running on busy roads"], correct: 0, note: "Security precautions are steps taken to make us free and safe from all dangers." },
+            { q: "Which of these is NOT a source of danger?", options: ["Wet floor", "Unsafe food", "Keeping the environment clean"], correct: 2, note: "Cleaning the environment is a precaution, not a danger." },
+            { q: "You should NOT stand while ________.", options: ["Eating lunch", "The bus is moving", "Talking to friends"], correct: 1, note: "Precaution: Do not stand while the bus is moving." },
+            { q: "Staff in the office should NOT share their ________.", options: ["Identity card", "Lunch", "Pens"], correct: 0, note: "Staff should not share their identity card for security purposes." },
+            { q: "If you see something strange at school, you should:", options: ["Keep it secret", "If you see something, say it", "Run to the playground"], correct: 1, note: "The school rule is: If you see something, say it." },
+            { q: "Children should never sit in the ________ of a car.", options: ["Back", "Front", "Middle"], correct: 1, note: "For safety, children must not sit in the front." },
+            { q: "Personal security tip: Avoid ________ walk or travelling.", options: ["Morning", "Afternoon", "Night"], correct: 2, note: "Avoid night walk or travelling to ensure your personal safety." }
+        ];
+
+        let examStarted = false;
+
+        function switchTab(mode) {
+            if (mode === 'study' && examStarted) {
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('animate-bounce');
+                setTimeout(() => btn.classList.remove('animate-bounce'), 500);
+                return;
+            }
+            const studySec = document.getElementById('studySection');
+            const examSec = document.getElementById('examSection');
+            const studyBtn = document.getElementById('studyTabBtn');
+            const examBtn = document.getElementById('examTabBtn');
+            if (mode === 'study') {
+                studySec.classList.remove('hidden'); examSec.classList.add('hidden');
+                studyBtn.classList.add('tab-active'); studyBtn.classList.remove('text-gray-400');
+                examBtn.classList.remove('tab-active'); examBtn.classList.add('text-gray-400');
+            } else {
+                studySec.classList.add('hidden'); examSec.classList.remove('hidden');
+                examBtn.classList.add('tab-active'); examBtn.classList.remove('text-gray-400');
+                studyBtn.classList.remove('tab-active'); studyBtn.classList.add('text-gray-400');
+            }
+            window.scrollTo(0,0);
+        }
+
+        function lockNotes() {
+            if (!examStarted) {
+                examStarted = true;
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('tab-locked');
+                document.getElementById('lockIcon').classList.remove('hidden');
+            }
+        }
+
+        function renderObjQuiz() {
+            const container = document.getElementById('objContainer');
+            objQuestions.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-gray-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
+                    <div class="space-y-2">${item.options.map((opt, i) => `<button class="option-btn" onclick="checkObj(this, ${index}, ${i})">${opt}</button>`).join('')}</div>
+                    <div id="obj-note-${index}" class="explanation"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        window.checkObj = function(btn, qIdx, optIdx) {
+            lockNotes();
+            const buttons = btn.parentElement.querySelectorAll('button');
+            const noteDiv = document.getElementById(`obj-note-${qIdx}`);
+            buttons.forEach(b => b.disabled = true);
+            if (optIdx === objQuestions[qIdx].correct) {
+                btn.classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-green-700 uppercase text-xs">✔ Correct!</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50');
+            } else {
+                btn.classList.add('wrong');
+                buttons[objQuestions[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-red-700 uppercase text-xs">✘ Review Note:</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
+            }
+        };
+
+        window.checkGap = function(input) {
+            lockNotes();
+            const parent = input.parentElement;
+            const correctAns = parent.dataset.answer.toLowerCase();
+            const userAns = input.value.trim().toLowerCase();
+            if (userAns === correctAns) {
+                input.style.color = "#10b981";
+                input.style.borderColor = "#10b981";
+            } else {
+                input.style.color = "#ef4444";
+                input.style.borderColor = "#ef4444";
+            }
+        };
+
+        renderObjQuiz();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,12 +402,12 @@
         .nav-link { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     </style>
     <!-- Vercel Web Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
-</head>
+    <!-- <script defer src="/_vercel/insights/script.js"></script> -->
+<!-- </head>
 <body class="pb-12">
 
-<!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
+   <!-- NAVIGATION BAR -->
+    <!-- <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 text-red-600 font-black text-xl italic">
                 <span>🛡️ SmartRevision</span>
@@ -39,23 +423,23 @@
             </div>
             <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
         </div>
-    </nav>
+    </nav> -->
 
-    <div class="max-w-3xl mx-auto px-4 mt-8">
+    <!-- <div class="max-w-3xl mx-auto px-4 mt-8"> -->
         <!-- Subject Header -->
-        <div class="bg-red-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
+        <!-- <div class="bg-red-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
             <h1 class="text-2xl font-black uppercase tracking-tight">Security Education</h1>
             <p class="text-red-100 mt-1 font-medium italic">Safety First, Everywhere!</p>
-            <!-- Score Banner is now visible once the first answer is clicked -->
-            <div id="scoreBanner" class="hidden mt-4 bg-white text-red-600 px-4 py-2 rounded-full font-black text-xl animate-bounce">
-                Your Score: <span id="currentScore">0</span> / 10
-            </div>
-        </div>
+               <!-- Score Banner is now visible once the first answer is clicked -->
+            <!-- <div id="scoreBanner" class="hidden mt-4 bg-white text-red-600 px-4 py-2 rounded-full font-black text-xl animate-bounce"> -->
+                <!-- Your Score: <span id="currentScore">0</span> / 10 -->
+            <!-- </div> -->
+        <!-- </div> --> -->
 
-        <div id="quizContainer" class="space-y-8"></div>
+        <!-- <div id="quizContainer" class="space-y-8"></div> -->
 
         <!-- Controls -->
-        <div class="mt-12 flex flex-col gap-4">
+        <!-- <div class="mt-12 flex flex-col gap-4">
             <button onclick="location.reload()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-xl hover:bg-red-700 shadow-xl">RESTART EXAM 🔄</button>
         </div>
     </div>
@@ -72,9 +456,9 @@
             { q: "What should you do if you are being bullied at school?", options: ["Keep it a secret.", "Report the bully to a teacher.", "Fight back."], correct: 1, note: "Teachers are there to help you. Always report bullying!" },
             { q: "In a moving bus, why is it dangerous to stand up?", options: ["Because you might fall if the bus stops.", "Because you are too tall.", "Because you want to see the road."], correct: 0, note: "Sudden stops can make you fall if you are not sitting safely." },
             { q: "What does 'If you see something, say it' mean?", options: ["Keep secrets.", "Report strange or suspicious things immediately.", "Wait until tomorrow."], correct: 1, note: "Reporting danger quickly helps stop bad things from happening." }
-        ];
+        ]; -->
 
-        let score = 0;
+        <!-- let score = 0;
         let answeredCount = 0;
         let userAnswers = new Array(questions.length).fill(null);
 
@@ -128,13 +512,13 @@
 
             // Update Score UI immediately
             document.getElementById('currentScore').innerText = score;
-        };
+        }; -->
 
-        renderQuiz();
+        <!-- renderQuiz();
     </script>
-</body>
-<!-- Footer -->
-    <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
-        <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah</p>
-    </footer>
-</html>
+</body> -->
+    <!-- Footer -->
+    <!-- <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12"> -->
+        <!-- <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah</p> -->
+    <!-- </footer> --> -->
+<!-- </html> --> -->
