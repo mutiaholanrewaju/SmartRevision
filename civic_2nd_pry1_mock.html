@@ -3,287 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Civic Education Interactive Mock Exam</title>
+    <title>Civic Education Mock Exam | SmartRevision</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #fdf2f8; }
-        .explanation { display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
-        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; }
-        .option-btn:hover:not(:disabled) { border-color: #ec4899; background-color: #fdf2f8; }
-        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 600; }
+        
+        /* Font size management */
+        .note-text { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: #831843; }
+        .exam-text { font-size: 1rem; }
+        
+        .explanation { display: none; margin-top: 0.75rem; padding: 1rem; border-radius: 0.75rem; font-size: 0.9rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; font-weight: 500; }
+        .option-btn:hover:not(:disabled) { border-color: #db2777; background-color: #fdf2f8; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
         .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
         .active-explanation { display: block !important; }
+        
+        .gap-input { border-bottom: 2px solid #db2777; outline: none; padding: 0 5px; font-weight: 700; color: #9d174d; background: transparent; text-align: center; }
+        .gap-input:focus { border-color: #ec4899; }
+        
+        .tab-active { border-bottom: 4px solid #db2777; color: #9d174d; font-weight: 800; }
+        .tab-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .topic-box {
+            border: 2px solid #fbcfe8;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        ol { list-style-type: decimal !important; margin-left: 2rem !important; padding-left: 0.5rem !important; }
+        li { margin-bottom: 0.5rem; display: list-item !important; }
+        li::marker { font-weight: 800; color: #db2777; }
     </style>
-    
-    <!-- Vercel Web Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
-
-
+    <script src="/_vercel/insights/script.js"></script>
 </head>
-<body class="p-4 md:p-8">
-<!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
-        <div class="max-w-4xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 text-red-600 font-black text-xl italic">
-                <span>🛡️ SmartRevision</span>
-            </a>
-            <div class="hidden md:flex gap-6 overflow-x-auto">
-                <a href="index.html" class="nav-link text-gray-600 hover:text-red-600">Home</a>
-                <a href="basicScience_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Science</a>
-                <a href="phe_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">PHE</a>
-                <a href="arabic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Arabic</a>
-                <a href="irs_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">IRS</a>
-                <a href="french_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">French</a>
-                <a href="civic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Civic</a>
+<body class="pb-20">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-pink-100 px-4 py-4 sticky top-0 z-50 shadow-sm text-center">
+        <div class="max-w-4xl mx-auto nav-grid">
+            <div class="flex justify-start">
+                <a href="index.html" class="bg-pink-50 text-pink-700 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1 hover:bg-pink-100 transition shadow-sm">
+                   🏠 Home
+                </a>
             </div>
-            <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
+            <div class="flex justify-center px-2">
+                <span class="font-black text-pink-700 uppercase tracking-tight text-xs leading-tight">Civic Education</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="bg-pink-100 text-pink-700 px-2 py-1 rounded-full text-[10px] font-black uppercase">P1 Mock</div>
+            </div>
         </div>
     </nav>
-    
-    <div class="max-w-3xl mx-auto">
-        <!-- Header -->
-        <div class="bg-pink-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
-            <h1 class="text-2xl font-black uppercase tracking-tight">Heroes & Culture Mock Exam</h1>
-            <p class="text-pink-100 mt-2 font-medium">Primary 1 | Civic & Social Studies Revision</p>
-            <div class="mt-4 flex justify-center gap-4 text-sm">
-                <span id="scoreTracker" class="bg-pink-800 px-4 py-1 rounded-full font-bold">Score: 0</span>
-                <button onclick="location.reload()" class="bg-white text-pink-700 px-4 py-1 rounded-full font-bold hover:bg-pink-50 transition">Start Over</button>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <!-- TABS SYSTEM -->
+        <div class="flex bg-white rounded-2xl shadow-sm mb-8 overflow-hidden border border-pink-100">
+            <button id="examTabBtn" onclick="switchTab('exam')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest tab-active transition-all">📝 Exam</button>
+            <button id="studyTabBtn" onclick="switchTab('study')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest text-gray-400 transition-all border-l border-gray-50 flex items-center justify-center gap-2">
+                <span id="lockIcon" class="hidden text-xs">🔒</span> 📖 Study Notes
+            </button>
+        </div>
+
+        <!-- STUDY NOTES SECTION -->
+        <div id="studySection" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-pink-50 mb-8">
+                <h2 class="text-2xl font-black text-pink-900 uppercase mb-8 border-b-2 border-pink-100 pb-3">📖 Revision Notes</h2>
+                
+                <div class="space-y-6 note-text">
+                    
+                    <!-- Rules and Regulation -->
+                    <div class="topic-box border-pink-200">
+                        <h3 class="font-black text-pink-700 text-sm uppercase mb-3 underline decoration-pink-100 underline-offset-4">1. Rules and Regulation</h3>
+                        <p class="mb-4">Rules and regulation are things we must do and not to do.</p>
+                        <p class="text-xs font-black text-pink-400 mb-2 uppercase tracking-widest italic">Types of Rules and Regulation:</p>
+                        <ol class="mb-4">
+                            <li>Rules and regulation at school</li>
+                            <li>Rules and regulation at home</li>
+                            <li>Rules and regulation at office</li>
+                            <li>Rules and regulation in the worship places</li>
+                        </ol>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="topic-box border-green-200">
+                        <h3 class="font-black text-green-700 text-sm uppercase mb-3">2. Benefits of obeying rules</h3>
+                        <ol>
+                            <li>Love</li>
+                            <li>Gifts</li>
+                            <li>Reward</li>
+                            <li>Praise</li>
+                            <li>Scholarship</li>
+                        </ol>
+                    </div>
+
+                    <!-- Disobedience -->
+                    <div class="topic-box border-red-200 bg-red-50/20">
+                        <h3 class="font-black text-red-700 text-sm uppercase mb-3">3. Disobeying rules and regulation</h3>
+                        <p class="mb-3 italic">Disobedience means going against the rules and regulations. When people disobey, they face results.</p>
+                        <p class="text-xs font-black text-red-400 mb-2 uppercase tracking-widest italic">Results of Disobeying:</p>
+                        <ol>
+                            <li>Punishment at home</li>
+                            <li>Punishment at school</li>
+                            <li>Loss of freedom</li>
+                            <li>Loss of Friends</li>
+                            <li>Discrimination</li>
+                        </ol>
+                    </div>
+
+                    <!-- School Rules -->
+                    <div class="topic-box border-blue-200">
+                        <h3 class="font-black text-blue-800 text-sm uppercase mb-3">4. Importance of School Rules</h3>
+                        <ol>
+                            <li>To be orderliness</li>
+                            <li>To keep pupils in check</li>
+                            <li>To have a conducive environment</li>
+                            <li>To respect the school authority</li>
+                            <li>To maintain peace and unity</li>
+                            <li>To set a standard in our society</li>
+                            <li>To provide safety and security</li>
+                            <li>To provide accountability in our school</li>
+                            <li>To respect the teachers</li>
+                        </ol>
+                    </div>
+
+                    <!-- Government Rules -->
+                    <div class="topic-box border-indigo-200">
+                        <h3 class="font-black text-indigo-800 text-sm uppercase mb-3">5. Government Rules</h3>
+                        <p class="text-xs font-black text-indigo-400 mb-2 uppercase tracking-widest italic">Results of Obeying:</p>
+                        <ol class="mb-6">
+                            <li>It keeps everyone safe</li>
+                            <li>It makes everyone feels comfortable</li>
+                            <li>It creates a better society</li>
+                            <li>It helps to maintain safety</li>
+                            <li>It prepare someone to live in a bigger society</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-red-400 mb-2 uppercase tracking-widest italic">Results of Disobeying Government:</p>
+                        <ol>
+                            <li>Fines</li>
+                            <li>Arrest</li>
+                            <li>Jail terms</li>
+                            <li>Imprisonment</li>
+                            <li>Loss of rights</li>
+                            <li>Legal action</li>
+                        </ol>
+                    </div>
+
+                    <!-- Obedience -->
+                    <div class="topic-box border-amber-200">
+                        <h3 class="font-black text-amber-800 text-sm uppercase mb-3">6. Obe-di-en-ce</h3>
+                        <p class="mb-3">Obedience means doing what you are told to do.</p>
+                        <p class="text-xs font-black text-amber-500 mb-2 uppercase italic">People we must obey:</p>
+                        <ol class="mb-6">
+                            <li>Parents</li>
+                            <li>Teachers</li>
+                            <li>Elderly ones</li>
+                            <li>Guardians</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-amber-500 mb-2 uppercase italic">Ways to show obedience:</p>
+                        <ol class="mb-6">
+                            <li>Listening to your parents, teachers or elderly ones</li>
+                            <li>Helping your parents</li>
+                            <li>Following the rules given</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-amber-500 mb-2 uppercase italic">Importance of obedience:</p>
+                        <ol>
+                            <li>It builds trust</li>
+                            <li>It brings blessing and rewards</li>
+                            <li>It keeps us safe from danger</li>
+                            <li>It makes our parents and teachers happy</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+                <button onclick="switchTab('exam')" class="mt-10 w-full bg-pink-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-pink-700 transition">Start Practice Exam ➔</button>
             </div>
         </div>
 
-        <!-- Section A: Objectives -->
-        <div class="space-y-8" id="quizContainer"></div>
+        <!-- PRACTICE EXAM SECTION -->
+        <div id="examSection" class="exam-text">
+            
+            <div class="flex justify-between items-center mb-8 px-2">
+                <span class="text-xs font-black text-pink-600 uppercase">Civic Mock Exam</span>
+                <div class="bg-pink-600 text-white px-4 py-1 rounded-full font-bold shadow-sm">Score: <span id="scoreTracker">0</span></div>
+            </div>
 
-        <!-- Section B: Achievement Matcher (Theory Helper) -->
-        <div class="mt-12 bg-white p-8 rounded-2xl shadow-md border-t-4 border-pink-600">
-            <h2 class="text-xl font-black text-pink-900 mb-4 uppercase">Section B: Achievement Matcher</h2>
-            <p class="text-sm text-gray-500 mb-6 italic">Practice matching these in your head or write them in your notebook!</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div class="space-y-2">
-                    <p><strong>1. Mary Slessor</strong></p>
-                    <p><strong>2. Funmilayo Ransome-Kuti</strong></p>
-                    <p><strong>3. Dele George</strong></p>
-                    <p><strong>4. Muritala Muhammad</strong></p>
+            <!-- SECTION A: Objectives -->
+            <div class="mb-12">
+                <div class="bg-pink-600 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section A: Objectives</div>
+                <div id="objContainer" class="space-y-6"></div>
+            </div>
+
+            <!-- SECTION B: Fill in the Gaps -->
+            <div class="mb-12">
+                <div class="bg-pink-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section B: Fill in the Gaps</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-pink-50 space-y-8">
+                    <p class="text-[10px] text-gray-400 italic mb-4 uppercase font-black tracking-widest">Type exact words from the notes. (Not case-sensitive)</p>
+                    
+                    <div class="question-block-gap" data-answer="not to do">
+                        1. Rules are things we must do and <input type="text" class="gap-input w-28" onchange="checkGap(this)">.
+                    </div>
+                    
+                    <div class="question-block-gap" data-answer="Scholarship">
+                        2. A benefit of obeying rules is receiving a <input type="text" class="gap-input w-32" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="disobedience">
+                        3. Going against rules and regulations is called <input type="text" class="gap-input w-36" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="jail terms">
+                        4. Disobeying government rules can lead to arrest or <input type="text" class="gap-input w-28" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="trust">
+                        5. Obedience is important because it builds <input type="text" class="gap-input w-20" onchange="checkGap(this)">.
+                    </div>
                 </div>
-                <div class="space-y-2 text-pink-700">
-                    <p>... Built an orphanage home</p>
-                    <p>... Stopped the killing of twins</p>
-                    <p>... Picture is on the 20 Naira note</p>
-                    <p>... First woman to drive a car</p>
+            </div>
+
+            <!-- SECTION C: Written -->
+            <div class="mb-12">
+                <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section C: Written Assessment</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    <div>
+                        <p class="font-bold mb-2">1. List three (3) people we must obey.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-pink-400 exam-text" placeholder="1... 2... 3..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">2. Mention two (2) results of disobeying rules at school.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-pink-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="pt-10">
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-black uppercase text-xs hover:bg-gray-300 transition">Finish & Reset Exam 🔄</button>
             </div>
         </div>
 
-        <div class="mt-10 text-center text-gray-500 text-sm italic pb-10">
-            Keep learning and be a hero too!
-        </div>
+        <footer class="mt-16 text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            © 2026 SmartRevision Hub | Lagos, Nigeria
+        </footer>
     </div>
 
     <script>
-        const questions = [
-            {
-                q: "What is a Hero?",
-                options: [
-                    "A man who does great things to help others.",
-                    "Someone who takes people's things.",
-                    "A person who sleeps all day."
-                ],
-                correct: 0,
-                note: "Heroes are special people who work hard and use courage to help their community."
-            },
-            {
-                q: "Which of these is a quality of a hero?",
-                options: [
-                    "Being lazy",
-                    "Being honest and truthful",
-                    "Being mean to friends"
-                ],
-                correct: 1,
-                note: "Heroes are honest, kind, and very hardworking."
-            },
-            {
-                q: "Whose picture is on the 20 Naira note?",
-                options: [
-                    "General Muritala Muhammed",
-                    "Sir Tafawa Balewa",
-                    "Herbert Macaulay"
-                ],
-                correct: 0,
-                note: "General Muritala Muhammed was the 4th head of state. You can find him on the 20 Naira note!"
-            },
-            {
-                q: "Who was the first woman to stop the killing of twins?",
-                options: [
-                    "Queen Amina",
-                    "Mary Slessor",
-                    "Chioma Ajunwa"
-                ],
-                correct: 1,
-                note: "Mary Slessor is a heroine because she saved many babies by stopping the killing of twins."
-            },
-            {
-                q: "Who was the first woman to drive a car in Nigeria?",
-                options: [
-                    "Chief Mrs Funmilayo Ransome-Kuti",
-                    "Ngozi Okonjo Iweala",
-                    "Kudirat Abiola"
-                ],
-                correct: 0,
-                note: "Chief Mrs Funmilayo Ransome-Kuti was very brave and was the first woman to drive a car."
-            },
-            {
-                q: "What is an Orphanage home?",
-                options: [
-                    "A place for people to buy food.",
-                    "A special home for children who do not have family.",
-                    "A school for adults."
-                ],
-                correct: 1,
-                note: "Orphanages are built to take care of children who have no family to look after them."
-            },
-            {
-                q: "Who built the first orphanage home in Nigeria?",
-                options: [
-                    "Reverend (Mrs) Dele George",
-                    "Margaret Ekpo",
-                    "Queen Amina"
-                ],
-                correct: 0,
-                note: "Mrs. Dele George was the first woman to build a special home for children without families."
-            },
-            {
-                q: "Which of these is a festival celebrated in Lagos?",
-                options: [
-                    "Osogbo Festival",
-                    "Eyo Festival",
-                    "Yam Festival"
-                ],
-                correct: 1,
-                note: "The Eyo Festival is very popular in Lagos and people wear white clothes to celebrate it."
-            },
-            {
-                q: "Why do we celebrate festivals?",
-                options: [
-                    "To fight with our neighbors.",
-                    "To remember our history and have fun.",
-                    "To stay at home alone."
-                ],
-                correct: 1,
-                note: "Festivals bring people together to sing, dance, eat, and remember happy events."
-            },
-            {
-                q: "Traditional music is played with ________ instruments.",
-                options: [
-                    "Local (indigenous)",
-                    "Electrical",
-                    "Computer"
-                ],
-                correct: 0,
-                note: "Traditional music uses local instruments made in our community like drums and gongs."
-            },
-            {
-                q: "Which of these is a traditional instrument?",
-                options: [
-                    "Piano",
-                    "Talking Drum",
-                    "Electric Guitar"
-                ],
-                correct: 1,
-                note: "The talking drum is a local instrument used to play traditional music."
-            },
-            {
-                q: "Handcrafts are objects made by ________.",
-                options: [
-                    "Big machines",
-                    "Hands",
-                    "Computers"
-                ],
-                correct: 1,
-                note: "Handcrafts mean things we use our hands and skills to make, like baskets or mats."
-            },
-            {
-                q: "Which of these is a type of craft?",
-                options: [
-                    "Watching TV",
-                    "Mat weaving",
-                    "Eating yam"
-                ],
-                correct: 1,
-                note: "Weaving mats or sewing clothes are examples of handcrafts."
-            },
-            {
-                q: "Who was the first and only Prime Minister of Nigeria?",
-                options: [
-                    "Sir Abubakar Tafawa Balewa",
-                    "Dr. Nnamdi Azikwe",
-                    "Chief Obafemi Awolowo"
-                ],
-                correct: 0,
-                note: "Sir Abubakar Tafawa Balewa was the first and only Prime Minister. He is on the 5 Naira note."
-            },
-            {
-                q: "Queen Amina of Zaria was a ________.",
-                options: [
-                    "Doctor",
-                    "Female warrior and ruler",
-                    "Singer"
-                ],
-                correct: 1,
-                note: "Queen Amina was a brave warrior who ruled the city of Zaria."
-            }
+        const objQuestions = [
+            { q: "What is a Hero?", options: ["A person who does great things to help others.", "Someone who sleeps all day.", "Someone who takes things."], correct: 0, note: "Heroes use courage and hard work to help their community." },
+            { q: "Whose picture is on the 20 Naira note?", options: ["Herbert Macaulay", "General Muritala Muhammed", "Sir Tafawa Balewa"], correct: 1, note: "General Muritala Muhammed was Nigeria's 4th head of state." },
+            { q: "Who was the first woman to drive a car in Nigeria?", options: ["Mary Slessor", "Queen Amina", "Chief Mrs Funmilayo Ransome-Kuti"], correct: 2, note: "She was a brave woman and the mother of Fela Kuti." },
+            { q: "Mary Slessor stopped the killing of ________.", options: ["Animals", "Twins", "Birds"], correct: 1, note: "Mary Slessor saved many babies in Calabar." },
+            { q: "What is an Orphanage home?", options: ["A home for kids without family.", "A place to buy food.", "A school for adults."], correct: 0, note: "Orphanages take care of children without parents." },
+            { q: "The Eyo Festival is popular in ________.", options: ["Kano", "Lagos", "Enugu"], correct: 1, note: "Eyo is a famous festival in Lagos where people wear white." },
+            { q: "Traditional music is played with ________ instruments.", options: ["Computer", "Electrical", "Local (indigenous)"], correct: 2, note: "Drums and gongs are examples of local instruments." },
+            { q: "Who was Nigeria's first and only Prime Minister?", options: ["Sir Abubakar Tafawa Balewa", "Nnamdi Azikwe", "Obafemi Awolowo"], correct: 0, note: "He is honored on the 5 Naira note." },
+            { q: "Handcrafts are objects made by ________.", options: ["Hands", "Big machines", "Computers"], correct: 0, note: "Baskets and mats are examples of handcrafts." },
+            { q: "Obedience makes our parents ________.", options: ["Angry", "Happy", "Sad"], correct: 1, note: "Obedient children bring joy and happiness to their family." }
         ];
 
         let score = 0;
-        const container = document.getElementById('quizContainer');
+        let examStarted = false;
+
+        function switchTab(mode) {
+            if (mode === 'study' && examStarted) {
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('animate-bounce');
+                setTimeout(() => btn.classList.remove('animate-bounce'), 500);
+                return;
+            }
+            const studySec = document.getElementById('studySection');
+            const examSec = document.getElementById('examSection');
+            const studyBtn = document.getElementById('studyTabBtn');
+            const examBtn = document.getElementById('examTabBtn');
+            if (mode === 'study') {
+                studySec.classList.remove('hidden'); examSec.classList.add('hidden');
+                studyBtn.classList.add('tab-active'); studyBtn.classList.remove('text-gray-400');
+                examBtn.classList.remove('tab-active'); examBtn.classList.add('text-gray-400');
+            } else {
+                studySec.classList.add('hidden'); examSec.classList.remove('hidden');
+                examBtn.classList.add('tab-active'); examBtn.classList.remove('text-gray-400');
+                studyBtn.classList.remove('tab-active'); studyBtn.classList.add('text-gray-400');
+            }
+            window.scrollTo(0,0);
+        }
+
+        function lockNotes() {
+            if (!examStarted) {
+                examStarted = true;
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('tab-locked');
+                document.getElementById('lockIcon').classList.remove('hidden');
+            }
+        }
 
         function renderQuiz() {
-            questions.forEach((item, index) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = "bg-white p-6 rounded-2xl shadow-sm border border-gray-100";
-                
-                let optionsHtml = item.options.map((opt, optIndex) => `
-                    <button class="option-btn" onclick="checkAnswer(this, ${index}, ${optIndex})">
-                        ${opt}
-                    </button>
-                `).join('');
-
-                qDiv.innerHTML = `
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
-                    <div class="options-container">${optionsHtml}</div>
-                    <div id="note-${index}" class="explanation"></div>
+            const container = document.getElementById('objContainer');
+            objQuestions.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-pink-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
+                    <div class="space-y-2">${item.options.map((opt, i) => `<button class="option-btn" onclick="checkAnswer(this, ${index}, ${i})">${opt}</button>`).join('')}</div>
+                    <div id="obj-note-${index}" class="explanation"></div>
                 `;
-                container.appendChild(qDiv);
+                container.appendChild(div);
             });
         }
 
         window.checkAnswer = function(btn, qIdx, optIdx) {
+            lockNotes();
             const parent = btn.parentElement;
             const buttons = parent.querySelectorAll('button');
-            const noteDiv = document.getElementById(`note-${qIdx}`);
-            const isCorrect = optIdx === questions[qIdx].correct;
+            const noteDiv = document.getElementById(`obj-note-${qIdx}`);
+            const isCorrect = optIdx === objQuestions[qIdx].correct;
 
             buttons.forEach(b => b.disabled = true);
 
             if (isCorrect) {
                 btn.classList.add('correct');
                 score += 1;
-                document.getElementById('scoreTracker').innerText = `Score: ${score}`;
-                noteDiv.innerHTML = `<span class="font-bold text-green-700">Well Done!</span><br>${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-green-50', 'text-green-800');
+                document.getElementById('scoreTracker').innerText = score;
+                noteDiv.innerHTML = `<span class="font-bold text-green-700 uppercase text-xs">✔ Excellent!</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50');
             } else {
                 btn.classList.add('wrong');
-                buttons[questions[qIdx].correct].classList.add('correct');
-                noteDiv.innerHTML = `<span class="font-bold text-red-700">Not quite!</span><br>${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-red-50', 'text-red-800');
+                buttons[objQuestions[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-red-700 uppercase text-xs">✘ Not quite</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
             }
-        }
+        };
+
+        window.checkGap = function(input) {
+            lockNotes();
+            const correctAns = input.dataset.answer.toLowerCase();
+            const userAns = input.value.trim().toLowerCase();
+            if (userAns === correctAns) {
+                input.style.color = "#10b981";
+                input.style.borderColor = "#10b981";
+            } else if (userAns !== "") {
+                input.style.color = "#ef4444";
+                input.style.borderColor = "#ef4444";
+            }
+        };
 
         renderQuiz();
     </script>
 </body>
-    <!-- Footer -->
-    <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
-        <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah</p>
-    </footer>
 </html>
