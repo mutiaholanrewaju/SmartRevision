@@ -3,355 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Science Interactive Mock Exam</title>
+    <title>Basic Science Comprehensive Mock | SmartRevision</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f0f9ff; }
-        .explanation { display: none; margin-top: 0.5rem; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; }
-        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; }
+        
+        /* Font size management */
+        .note-text { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: #0c4a6e; }
+        .exam-text { font-size: 1rem; }
+        
+        .explanation { display: none; margin-top: 0.75rem; padding: 1rem; border-radius: 0.75rem; font-size: 0.9rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; font-weight: 500; }
         .option-btn:hover:not(:disabled) { border-color: #0ea5e9; background-color: #f0f9ff; }
-        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 600; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
         .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
         .active-explanation { display: block !important; }
-        @media print { .no-print { display: none; } }
-    </style>
-    <!-- Vercel Web Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
+        
+        .gap-input { border-bottom: 2px solid #0284c7; outline: none; padding: 0 5px; font-weight: 700; color: #0369a1; background: transparent; text-align: center; }
+        .gap-input:focus { border-color: #0ea5e9; }
+        
+        .tab-active { border-bottom: 4px solid #0284c7; color: #0369a1; font-weight: 800; }
+        .tab-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            align-items: center;
+            width: 100%;
+        }
 
+        .topic-box {
+            border: 2px solid #bae6fd;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        ol { list-style-type: decimal !important; margin-left: 2rem !important; padding-left: 0.5rem !important; }
+        li { margin-bottom: 0.5rem; display: list-item !important; }
+        li::marker { font-weight: 800; color: #0284c7; }
+    </style>
+    <script src="/_vercel/insights/script.js"></script>
 </head>
-<body class="p-4 md:p-8">
-<!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
-        <div class="max-w-4xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 text-red-600 font-black text-xl italic">
-                <span>🛡️ SmartRevision</span>
-            </a>
-            <div class="hidden md:flex gap-6 overflow-x-auto">
-                <a href="index.html" class="nav-link text-gray-600 hover:text-red-600">Home</a>
-                <a href="basicScience_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Science</a>
-                <a href="phe_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">PHE</a>
-                <a href="arabic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Arabic</a>
-                <a href="irs_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">IRS</a>
-                <a href="french_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">French</a>
-                <a href="civic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Civic</a>
+<body class="pb-20">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-sky-100 px-4 py-4 sticky top-0 z-50 shadow-sm text-center">
+        <div class="max-w-4xl mx-auto nav-grid">
+            <div class="flex justify-start">
+                <a href="index.html" class="bg-sky-50 text-sky-700 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1 hover:bg-sky-100 transition shadow-sm">
+                   🏠 Home
+                </a>
             </div>
-            <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
+            <div class="flex justify-center px-2">
+                <span class="font-black text-sky-700 uppercase tracking-tight text-xs leading-tight">Basic Science</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-[10px] font-black uppercase">P1 Mock</div>
+            </div>
         </div>
     </nav>
-    
-    <div class="max-w-3xl mx-auto">
-        <!-- Header -->
-        <div class="bg-sky-600 text-white p-6 rounded-2xl shadow-lg mb-8 text-center">
-            <h1 class="text-2xl font-black uppercase tracking-tight">Basic Science Mock Exam</h1>
-            <p class="text-sky-100 mt-2 font-medium">Primary 1 | 2026 Second Term Final Revision</p>
-            <div class="mt-4 flex justify-center gap-4 text-sm no-print">
-                <span id="scoreTracker" class="bg-sky-800 px-4 py-1 rounded-full font-bold">Score: 0</span>
-                <button onclick="location.reload()" class="bg-white text-sky-700 px-4 py-1 rounded-full font-bold hover:bg-sky-50 transition">Start Over</button>
-                <button onclick="window.print()" class="bg-sky-500 text-white px-4 py-1 rounded-full font-bold hover:bg-sky-400 transition">Print Exam</button>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <!-- TABS SYSTEM -->
+        <div class="flex bg-white rounded-2xl shadow-sm mb-8 overflow-hidden border border-sky-100">
+            <button id="examTabBtn" onclick="switchTab('exam')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest tab-active transition-all">📝 Exam</button>
+            <button id="studyTabBtn" onclick="switchTab('study')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest text-gray-400 transition-all border-l border-gray-50 flex items-center justify-center gap-2">
+                <span id="lockIcon" class="hidden text-xs">🔒</span> 📖 Study Notes
+            </button>
+        </div>
+
+        <!-- STUDY NOTES SECTION -->
+        <div id="studySection" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-sky-50 mb-8">
+                <h2 class="text-2xl font-black text-sky-900 uppercase mb-8 border-b-2 border-sky-100 pb-3">📖 Revision Notes</h2>
+                
+                <div class="space-y-6 note-text">
+                    
+                    <!-- Topic: Air -->
+                    <div class="topic-box border-sky-200">
+                        <h3 class="font-black text-sky-700 text-sm uppercase mb-3 underline decoration-sky-100 underline-offset-4">1. Air</h3>
+                        <p class="mb-4 font-bold">Air is a gaseous substance we cannot see but we can feel it. It can occupy space.</p>
+                        <p class="text-xs font-black text-sky-400 mb-2 uppercase tracking-widest italic">Existence of Air:</p>
+                        <ol class="mb-4">
+                            <li>Air from the mouth into the balloon</li>
+                            <li>When balloon bursts, air in it escape</li>
+                            <li>Strong air bend the tree</li>
+                            <li>Air blow and dry cloth</li>
+                            <li>Wind blow sand and paper to the sky</li>
+                        </ol>
+                    </div>
+
+                    <!-- Topic: Soil -->
+                    <div class="topic-box border-orange-200">
+                        <h3 class="font-black text-orange-800 text-sm uppercase mb-3 underline decoration-orange-100 underline-offset-4">2. Soil</h3>
+                        <p class="mb-4">Soil is the top part of the earth on which plant grow.</p>
+                        
+                        <p class="text-xs font-black text-orange-400 mb-2 uppercase italic">Types of soil:</p>
+                        <ol class="mb-6">
+                            <li>Sandy soil</li>
+                            <li>Clay soil</li>
+                            <li>Loamy soil</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-orange-400 mb-2 uppercase italic">Uses of soil:</p>
+                        <ol class="mb-6">
+                            <li>We plant on the soil</li>
+                            <li>Some animals lives in the soil</li>
+                            <li>Plant grow from the soil</li>
+                            <li>Water is gotten from the soil</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-orange-400 mb-2 uppercase italic">Component of soil:</p>
+                        <ol class="mb-4">
+                            <li>Water</li>
+                            <li>Animal in the soil</li>
+                            <li>Soil air</li>
+                            <li>Rock particles e.g stone</li>
+                            <li>Organic particles</li>
+                        </ol>
+                    </div>
+
+                    <!-- Topic: Light Energy -->
+                    <div class="topic-box border-yellow-300">
+                        <h3 class="font-black text-yellow-700 text-sm uppercase mb-3 underline decoration-yellow-100 underline-offset-4">3. Light Energy</h3>
+                        <p class="mb-4">Light is a type of energy that help us to see things around.</p>
+                        
+                        <p class="text-xs font-black text-yellow-600 mb-2 uppercase italic">Sources of Light:</p>
+                        <div class="grid grid-cols-2 gap-4 mb-6 text-base">
+                            <ol>
+                                <li>Sun</li>
+                                <li>Star</li>
+                                <li>Candle</li>
+                                <li>Fireflies</li>
+                            </ol>
+                            <ol start="5">
+                                <li>Electric bulb</li>
+                                <li>Lamp</li>
+                                <li>Lighter</li>
+                            </ol>
+                        </div>
+
+                        <p class="text-xs font-black text-yellow-600 mb-2 uppercase italic">Uses of light:</p>
+                        <ol class="mb-4">
+                            <li>It is used to operate machine</li>
+                            <li>Sunlight makes plant to grow</li>
+                            <li>It helps to dry our clothes</li>
+                            <li>It helps us to see in the dark</li>
+                        </ol>
+                    </div>
+
+                    <!-- Topic: Colours -->
+                    <div class="topic-box border-indigo-200">
+                        <h3 class="font-black text-indigo-700 text-sm uppercase mb-3 underline decoration-indigo-100 underline-offset-4">4. Colour identification of objects</h3>
+                        <p class="mb-4">Colour is how an object looks when light shines on it.</p>
+                        
+                        <p class="text-xs font-black text-indigo-400 mb-2 uppercase italic">Natural colour of objects:</p>
+                        <ol class="mb-6 text-base">
+                            <li>Cotton - white</li>
+                            <li>Tomatoes - red</li>
+                            <li>Charcoal - black</li>
+                            <li>Sky - blue</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-indigo-400 mb-2 uppercase italic">Types of Colour:</p>
+                        <ol class="mb-6 text-base">
+                            <li><strong>Primary colours:</strong> This consist of red, yellow and blue</li>
+                            <li><strong>Secondary colours:</strong> This consist of green, purple and orange</li>
+                        </ol>
+
+                        <p class="text-xs font-black text-indigo-400 mb-2 uppercase italic">Uses of Colour:</p>
+                        <ol class="mb-4 text-base">
+                            <li>It is used as decoration</li>
+                            <li>It is used to beautify an object</li>
+                            <li>It is used in traffic light</li>
+                            <li>It is used to identify logo of companies</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+                <button onclick="switchTab('exam')" class="mt-10 w-full bg-sky-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-sky-700 transition">Start Practice Exam ➔</button>
             </div>
         </div>
 
-        <!-- Section A: Objectives -->
-        <div class="bg-white p-4 rounded-t-2xl border-x border-t font-black text-sky-800 uppercase text-sm">Section A: Objective Questions</div>
-        <div class="space-y-6 bg-white p-6 rounded-b-2xl shadow-md border-x border-b mb-12" id="quizContainer"></div>
-
-        <!-- Section B: Comprehensive Theory -->
-        <div class="bg-white p-8 rounded-2xl shadow-md border-t-8 border-sky-600">
-            <h2 class="text-xl font-black text-sky-900 mb-6 uppercase border-b pb-2">Section B: Theory / Written Section</h2>
-            <p class="text-sm text-gray-500 italic mb-8">Instructions: Provide short and simple answers to the following questions.</p>
+        <!-- PRACTICE EXAM SECTION -->
+        <div id="examSection" class="exam-text">
             
-            <div class="space-y-10">
-                <!-- Air -->
-                <div class="p-4 bg-slate-50 rounded-xl">
-                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Air</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">1. What is Air?</label>
-                            <p class="text-xs text-gray-400 mb-2">Answer: Air is a ________ substance we cannot see but can ________ it.</p>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-16 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">2. List two (2) ways to show that air exists.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none" placeholder="Example: Air blows sand..."></textarea>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex justify-between items-center mb-8 px-2">
+                <span class="text-xs font-black text-sky-600 uppercase tracking-widest">Science Mock Exam</span>
+                <div class="bg-sky-600 text-white px-4 py-1 rounded-full font-bold shadow-sm">Score: <span id="scoreTracker">0</span></div>
+            </div>
 
-                <!-- Soil -->
-                <div class="p-4 bg-slate-50 rounded-xl">
-                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Soil</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">3. List the three (3) types of soil.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none" placeholder="1... 2... 3..."></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">4. Mention two (2) uses of soil.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">5. Name three (3) things that can be found in the soil (Components).</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                    </div>
-                </div>
+            <!-- SECTION A: OBJECTIVES -->
+            <div class="mb-12">
+                <div class="bg-sky-600 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section A: Objectives</div>
+                <div id="objContainer" class="space-y-6"></div>
+            </div>
 
-                <!-- Light -->
-                <div class="p-4 bg-slate-50 rounded-xl">
-                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Light Energy</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">6. What is Light?</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-16 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">7. List four (4) sources of light.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">8. Mention two (2) uses of light.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
-                        </div>
+            <!-- SECTION B: FILL IN THE GAP -->
+            <div class="mb-12">
+                <div class="bg-sky-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section B: Fill in the gaps</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-sky-100 space-y-8">
+                    <p class="text-[10px] text-gray-400 italic mb-4 uppercase font-black tracking-widest">Type exact words from the notes. (Not case-sensitive)</p>
+                    
+                    <div class="question-block-gap" data-answer="gaseous">
+                        1. Air is a <input type="text" class="gap-input w-28" onchange="checkGap(this)"> substance.
                     </div>
-                </div>
+                    
+                    <div class="question-block-gap" data-answer="top">
+                        2. Soil is the <input type="text" class="gap-input w-20" onchange="checkGap(this)"> part of the earth.
+                    </div>
 
-                <!-- Colours -->
-                <div class="p-4 bg-slate-50 rounded-xl">
-                    <h3 class="font-bold text-sky-700 mb-4 italic underline text-lg">Topic: Colours</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">9. What is the natural colour of these objects?</label>
-                            <div class="grid grid-cols-2 gap-2 text-sm">
-                                <div>Cotton: ________</div>
-                                <div>Tomatoes: ________</div>
-                                <div>Charcoal: ________</div>
-                                <div>Sky: ________</div>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">10. List the three (3) Primary Colours.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-20 focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-700 mb-1">11. Mention two (2) uses of colour.</label>
-                            <textarea class="w-full p-3 border-2 border-gray-200 rounded-lg h-24 focus:border-sky-500 outline-none"></textarea>
-                        </div>
+                    <div class="question-block-gap" data-answer="Sun">
+                        3. A natural source of light is the <input type="text" class="gap-input w-20" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="blue">
+                        4. The natural colour of the sky is <input type="text" class="gap-input w-20" onchange="checkGap(this)">.
+                    </div>
+
+                    <div class="question-block-gap" data-answer="Primary">
+                        5. Red, Yellow and Blue are <input type="text" class="gap-input w-28" onchange="checkGap(this)"> colours.
                     </div>
                 </div>
             </div>
+
+            <!-- SECTION C: WRITTEN -->
+            <div class="mb-12">
+                <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section C: Written Assessment</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    <div>
+                        <p class="font-bold mb-2">1. List two (2) ways to show that air exists.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-sky-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">2. Name the three (3) types of soil.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-sky-400 exam-text" placeholder="1... 2... 3..." onfocus="lockNotes()"></textarea>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-2">3. Mention two (2) sources of light.</p>
+                        <textarea class="w-full p-3 border-2 border-gray-100 rounded-xl h-24 outline-none focus:border-sky-400 exam-text" placeholder="Type here..." onfocus="lockNotes()"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-10">
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-black uppercase text-xs hover:bg-gray-300 transition shadow-inner">Finish & Reset Exam 🔄</button>
+            </div>
         </div>
 
-        <div class="mt-10 text-center text-gray-500 text-sm italic pb-10 no-print">
-            Good luck with your Basic Science Exam!
-        </div>
+        <footer class="mt-16 text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            © 2026 SmartRevision Hub | Lagos, Nigeria
+        </footer>
     </div>
 
     <script>
-        const questions = [
-            {
-                q: "What is Air?",
-                options: [
-                    "Something we can see clearly.",
-                    "A gaseous substance we cannot see but can feel.",
-                    "A hard rock."
-                ],
-                correct: 1,
-                note: "Note: Air is invisible (we cannot see it), but we can feel it on our skin."
-            },
-            {
-                q: "When a balloon bursts, what happens to the air inside?",
-                options: [
-                    "It turns into water.",
-                    "It escapes.",
-                    "It stays inside."
-                ],
-                correct: 1,
-                note: "Note: Air escapes the balloon because it is a gas that was occupying space inside."
-            },
-            {
-                q: "Strong air can ________ a tree.",
-                options: [
-                    "Bend",
-                    "Eat",
-                    "Paint"
-                ],
-                correct: 0,
-                note: "Note: When air is very strong (wind), it has power to bend trees."
-            },
-            {
-                q: "What is the top part of the earth where plants grow?",
-                options: [
-                    "Air",
-                    "Soil",
-                    "Clouds"
-                ],
-                correct: 1,
-                note: "Note: Soil is the top layer of the earth where we plant our crops."
-            },
-            {
-                q: "Which of these is a type of soil?",
-                options: [
-                    "Stones",
-                    "Clay soil",
-                    "Water soil"
-                ],
-                correct: 1,
-                note: "Note: The three types of soil are Sand, Clay, and Loamy soil."
-            },
-            {
-                q: "What can we get from the soil?",
-                options: [
-                    "Water",
-                    "Fire",
-                    "Air from the sky"
-                ],
-                correct: 0,
-                note: "Note: Soil helps us get water from the ground."
-            },
-            {
-                q: "Which of these is a component (thing found) in the soil?",
-                options: [
-                    "Table and chairs",
-                    "Rock particles like stones",
-                    "Computers"
-                ],
-                correct: 1,
-                note: "Note: Soil contains rock particles, water, animals, and soil air."
-            },
-            {
-                q: "What helps us to see things around us?",
-                options: [
-                    "Darkness",
-                    "Light",
-                    "Sound"
-                ],
-                correct: 1,
-                note: "Note: Light is a type of energy that lets our eyes see objects."
-            },
-            {
-                q: "Which of these is a source of light mentioned in your notes?",
-                options: [
-                    "Sun and Stars",
-                    "Stones and Sand",
-                    "Water and Soil"
-                ],
-                correct: 0,
-                note: "Note: Sun, Stars, Candles, and Electric bulbs are all sources of light."
-            },
-            {
-                q: "Sunlight helps ________ to grow.",
-                options: [
-                    "Plastics",
-                    "Plants",
-                    "Metals"
-                ],
-                correct: 1,
-                note: "Note: Plants need light energy from the sun to grow."
-            },
-            {
-                q: "We use light to help us see in the ________.",
-                options: [
-                    "Morning",
-                    "Dark",
-                    "Sun"
-                ],
-                correct: 1,
-                note: "Note: When it is dark, we use lamps or bulbs to help us see."
-            },
-            {
-                q: "According to your notes, what is the natural colour of Charcoal?",
-                options: [
-                    "White",
-                    "Red",
-                    "Black"
-                ],
-                correct: 2,
-                note: "Note: Natural colours: Charcoal is black, Cotton is white, and Tomatoes are red."
-            },
-            {
-                q: "Which of these are Primary Colours?",
-                options: [
-                    "Red, Yellow and Blue",
-                    "Green, Purple and Orange",
-                    "Pink, Brown and Grey"
-                ],
-                correct: 0,
-                note: "Note: Red, Yellow, and Blue are the three primary colours."
-            },
-            {
-                q: "Secondary colours consist of Green, Purple and ________.",
-                options: [
-                    "Black",
-                    "Orange",
-                    "Red"
-                ],
-                correct: 1,
-                note: "Note: Secondary colours are Green, Purple, and Orange."
-            },
-            {
-                q: "Colour can be used to identify the ________ of companies.",
-                options: [
-                    "Logo",
-                    "Food",
-                    "Address"
-                ],
-                correct: 0,
-                note: "Note: Companies use specific colours to help people recognize their logos."
-            }
+        const objQuestions = [
+            { q: "What is Air?", options: ["Something we can see clearly.", "A gaseous substance we cannot see but can feel.", "A hard rock."], correct: 1, note: "Air is invisible, but we feel it on our skin." },
+            { q: "When a balloon bursts, what happens to the air?", options: ["It turns into water.", "It escapes.", "It stays inside."], correct: 1, note: "Air escapes because it is a gas that occupies space." },
+            { q: "Strong air can ________ a tree.", options: ["Bend", "Eat", "Paint"], correct: 0, note: "Strong moving air (wind) can bend branches and trees." },
+            { q: "What is the top part of the earth where plants grow?", options: ["Air", "Soil", "Clouds"], correct: 1, note: "Soil is the fertile top layer of the earth." },
+            { q: "Which of these is a type of soil?", options: ["Stones", "Clay soil", "Water soil"], correct: 1, note: "Types of soil include Sandy, Clay, and Loamy." },
+            { q: "Which of these is a component found in soil?", options: ["Rock particles", "Computers", "Table"], correct: 0, note: "Soil contains rock particles, water, air, and animals." },
+            { q: "What helps us to see things around us?", options: ["Darkness", "Light", "Sound"], correct: 1, note: "Light is energy that makes vision possible." },
+            { q: "The natural colour of Charcoal is ________.", options: ["White", "Red", "Black"], correct: 2, note: "Charcoal is naturally black." },
+            { q: "Which of these are Primary Colours?", options: ["Red, Yellow and Blue", "Green, Purple and Orange", "Pink and Brown"], correct: 0, note: "Primary colours cannot be mixed from other colours." },
+            { q: "Sunlight helps ________ to grow.", options: ["Plastics", "Plants", "Metals"], correct: 1, note: "Plants use sunlight to make food and grow." }
         ];
 
+        let examStarted = false;
         let score = 0;
-        const container = document.getElementById('quizContainer');
 
-        function renderQuiz() {
-            questions.forEach((item, index) => {
-                const qDiv = document.createElement('div');
-                qDiv.className = "p-4 border-b border-gray-100 last:border-0";
-                
-                let optionsHtml = item.options.map((opt, optIndex) => `
-                    <button class="option-btn" onclick="checkAnswer(this, ${index}, ${optIndex})">
-                        ${opt}
-                    </button>
-                `).join('');
+        function switchTab(mode) {
+            if (mode === 'study' && examStarted) {
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('animate-bounce');
+                setTimeout(() => btn.classList.remove('animate-bounce'), 500);
+                return;
+            }
+            const studySec = document.getElementById('studySection');
+            const examSec = document.getElementById('examSection');
+            const studyBtn = document.getElementById('studyTabBtn');
+            const examBtn = document.getElementById('examTabBtn');
+            if (mode === 'study') {
+                studySec.classList.remove('hidden'); examSec.classList.add('hidden');
+                studyBtn.classList.add('tab-active'); studyBtn.classList.remove('text-gray-400');
+                examBtn.classList.remove('tab-active'); examBtn.classList.add('text-gray-400');
+            } else {
+                studySec.classList.add('hidden'); examSec.classList.remove('hidden');
+                examBtn.classList.add('tab-active'); examBtn.classList.remove('text-gray-400');
+                studyBtn.classList.remove('tab-active'); studyBtn.classList.add('text-gray-400');
+            }
+            window.scrollTo(0,0);
+        }
 
-                qDiv.innerHTML = `
-                    <h3 class="font-bold text-gray-800 mb-3">${index + 1}. ${item.q}</h3>
-                    <div class="options-container">${optionsHtml}</div>
-                    <div id="note-${index}" class="explanation"></div>
+        function lockNotes() {
+            if (!examStarted) {
+                examStarted = true;
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('tab-locked');
+                document.getElementById('lockIcon').classList.remove('hidden');
+            }
+        }
+
+        function renderObjQuiz() {
+            const container = document.getElementById('objContainer');
+            objQuestions.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-sky-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
+                    <div class="space-y-2">${item.options.map((opt, i) => `<button class="option-btn" onclick="checkObj(this, ${index}, ${i})">${opt}</button>`).join('')}</div>
+                    <div id="obj-note-${index}" class="explanation"></div>
                 `;
-                container.appendChild(qDiv);
+                container.appendChild(div);
             });
         }
 
-        window.checkAnswer = function(btn, qIdx, optIdx) {
-            const parent = btn.parentElement;
-            const buttons = parent.querySelectorAll('button');
-            const noteDiv = document.getElementById(`note-${qIdx}`);
-            const isCorrect = optIdx === questions[qIdx].correct;
-
+        window.checkObj = function(btn, qIdx, optIdx) {
+            lockNotes();
+            const buttons = btn.parentElement.querySelectorAll('button');
+            const noteDiv = document.getElementById(`obj-note-${qIdx}`);
             buttons.forEach(b => b.disabled = true);
-
-            if (isCorrect) {
+            if (optIdx === objQuestions[qIdx].correct) {
                 btn.classList.add('correct');
-                score += 1;
-                document.getElementById('scoreTracker').innerText = `Score: ${score}`;
-                noteDiv.innerHTML = `<span class="font-bold">Correct!</span> ${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-green-50', 'text-green-800');
+                score++;
+                document.getElementById('scoreTracker').innerText = score;
+                noteDiv.innerHTML = `<span class="font-bold text-green-700 uppercase text-xs">✔ Correct!</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50');
             } else {
                 btn.classList.add('wrong');
-                buttons[questions[qIdx].correct].classList.add('correct');
-                noteDiv.innerHTML = `<span class="font-bold">Try again!</span> ${questions[qIdx].note}`;
-                noteDiv.classList.add('active-explanation', 'bg-red-50', 'text-red-800');
+                buttons[objQuestions[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-red-700 uppercase text-xs">✘ Review Note:</span><br>${objQuestions[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
             }
-        }
+        };
 
-        renderQuiz();
+        window.checkGap = function(input) {
+            lockNotes();
+            const parent = input.parentElement;
+            const correctAns = parent.dataset.answer.toLowerCase();
+            const userAns = input.value.trim().toLowerCase();
+            if (userAns === correctAns) {
+                input.style.color = "#10b981";
+                input.style.borderColor = "#10b981";
+            } else if (userAns !== "") {
+                input.style.color = "#ef4444";
+                input.style.borderColor = "#ef4444";
+            }
+        };
+
+        renderObjQuiz();
     </script>
 </body>
-<!-- Footer -->
-
-    <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
-
-        <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah</p>
 </html>
