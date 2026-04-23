@@ -3,558 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive French Mock Exam - Primary 1</title>
+    <title>Primary 1 French Mock Exam | SmartRevision</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0fdf4;
-            color: #1f2937;
-        }
-        .exam-sheet {
-            background: white;
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 2.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            border-radius: 1rem;
-            border: 1px solid #d1fae5;
-        }
-        .option-btn {
-            transition: all 0.2s;
-            border: 2px solid #e5e7eb;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            cursor: pointer;
+        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; }
+        
+        /* Font size management */
+        .note-text { font-size: 1.25rem; font-weight: 500; line-height: 1.6; color: #064e3b; }
+        .exam-text { font-size: 1rem; }
+        
+        .explanation { display: none; margin-top: 0.75rem; padding: 1rem; border-radius: 0.75rem; font-size: 0.9rem; }
+        .option-btn { transition: all 0.2s; text-align: left; width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.75rem; background: white; margin-bottom: 0.5rem; cursor: pointer; font-weight: 500; }
+        .option-btn:hover:not(:disabled) { border-color: #22c55e; background-color: #f0fdf4; }
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5 !important; color: #065f46 !important; font-weight: 700; }
+        .wrong { border-color: #ef4444 !important; background-color: #fef2f2 !important; color: #991b1b !important; }
+        .active-explanation { display: block !important; }
+        
+        .gap-input { border-bottom: 2px solid #22c55e; outline: none; padding: 0 5px; font-weight: 700; color: #166534; background: transparent; text-align: center; }
+        .gap-input:focus { border-color: #10b981; }
+        
+        .tab-active { border-bottom: 4px solid #16a34a; color: #166534; font-weight: 800; }
+        .tab-locked { opacity: 0.5; cursor: not-allowed !important; filter: grayscale(1); }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 80px;
+            align-items: center;
             width: 100%;
-            text-align: left;
-            font-weight: 500;
         }
-        .option-btn:hover {
-            background-color: #f0fdf4;
-            border-color: #22c55e;
+
+        .topic-box {
+            border: 2px solid #d1fae5;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .option-btn.selected {
-            background-color: #dcfce7;
-            border-color: #22c55e;
-            color: #166534;
-        }
-        .correct {
-            background-color: #bbf7d0 !important;
-            border-color: #15803d !important;
-            color: #14532d !important;
-        }
-        .incorrect {
-            background-color: #fee2e2 !important;
-            border-color: #b91c1c !important;
-            color: #7f1d1d !important;
-        }
-        input[type="text"] {
-            border-bottom: 2px solid #9ca3af;
-            outline: none;
-            text-align: center;
-            padding: 2px 5px;
-            background: transparent;
-        }
-        input[type="text"]:focus {
-            border-color: #22c55e;
-        }
-        @media print {
-            .no-print { display: none; }
-            .exam-sheet { box-shadow: none; margin: 0; width: 100%; border: none; padding: 1rem; }
-            body { background: white; }
-        }
+
+        ol { list-style-type: decimal !important; margin-left: 2rem !important; padding-left: 0.5rem !important; }
+        li { margin-bottom: 0.5rem; display: list-item !important; }
+        li::marker { font-weight: 800; color: #16a34a; }
     </style>
-        <!-- Vercel Web Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
+    <script src="/_vercel/insights/script.js"></script>
 </head>
-<body>
-<!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm px-4 py-3">
-        <div class="max-w-4xl mx-auto flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 text-red-600 font-black text-xl italic">
-                <span>🛡️ SmartRevision</span>
-            </a>
-            <div class="hidden md:flex gap-6 overflow-x-auto">
-                <a href="index.html" class="nav-link text-gray-600 hover:text-red-600">Home</a>
-                <a href="basicScience_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Science</a>
-                <a href="phe_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">PHE</a>
-                <a href="arabic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Arabic</a>
-                <a href="irs_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">IRS</a>
-                <a href="french_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">French</a>
-                <a href="civic_2nd_pry1_mock.html" class="nav-link text-gray-400 hover:text-red-600">Civic</a>
+<body class="pb-20">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="bg-white border-b border-green-100 px-4 py-4 sticky top-0 z-50 shadow-sm text-center">
+        <div class="max-w-4xl mx-auto nav-grid">
+            <div class="flex justify-start">
+                <a href="index.html" class="bg-green-50 text-green-700 px-3 py-1.5 rounded-full font-bold text-xs flex items-center gap-1 hover:bg-green-100 transition">
+                   🏠 Home
+                </a>
             </div>
-            <a href="index.html" class="md:hidden text-red-600 font-bold">Menu</a>
+            <div class="flex justify-center px-2">
+                <span class="font-black text-green-700 uppercase tracking-tight text-xs leading-tight">French Language</span>
+            </div>
+            <div class="flex justify-end">
+                <div class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-[10px] font-black uppercase">P1 Mock</div>
+            </div>
         </div>
     </nav>
-    
-<div class="max-w-4xl mx-auto px-4 py-6 no-print">
-    <div class="bg-green-600 p-6 rounded-2xl shadow-xl text-white mb-6">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="text-2xl font-bold mb-1">Mock Exam Prep 2026 🇫🇷</h2>
-                <p class="opacity-90 text-sm">Interactive interface: Select answers and check scores below.</p>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="window.print()" class="bg-white text-green-700 px-4 py-2 rounded-lg font-bold hover:bg-green-50">Print PDF</button>
-                <button onclick="resetExam()" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-400">Clear All</button>
-            </div>
+
+    <div class="max-w-3xl mx-auto px-4 mt-6">
+        <!-- TABS SYSTEM -->
+        <div class="flex bg-white rounded-2xl shadow-sm mb-8 overflow-hidden border border-gray-100">
+            <button id="examTabBtn" onclick="switchTab('exam')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest tab-active transition-all">📝 Exam</button>
+            <button id="studyTabBtn" onclick="switchTab('study')" class="flex-1 py-4 text-sm font-bold uppercase tracking-widest text-gray-400 transition-all border-l border-gray-50 flex items-center justify-center gap-2">
+                <span id="lockIcon" class="hidden text-xs">🔒</span> 📖 Study Notes
+            </button>
         </div>
-    </div>
-</div>
 
-<div class="exam-sheet">
-    <!-- Header -->
-    <div class="text-center border-b-4 border-double border-green-800 pb-6 mb-8">
-        <h1 class="text-3xl font-black uppercase tracking-tighter text-green-900">Final Mock Examination</h1>
-        <h2 class="text-xl font-bold text-gray-700">Subject: French Language (Le Français)</h2>
-        <div class="flex justify-between mt-6 text-sm font-black text-green-700">
-            <span>Class: Primary 1</span>
-            <span>Term: Second Term</span>
-            <span>Duration: 1.5 Hours</span>
-        </div>
-    </div>
+        <!-- STUDY NOTES SECTION -->
+        <div id="studySection" class="hidden">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border border-green-50 mb-8">
+                <h2 class="text-2xl font-black text-green-900 uppercase mb-8 border-b-2 border-green-100 pb-3">📖 Revision Notes</h2>
+                
+                <div class="space-y-6 note-text">
+                    
+                    <!-- 1. Vocabulary List -->
+                    <div class="topic-box border-green-200">
+                        <h3 class="font-black text-green-700 text-sm uppercase mb-4 underline decoration-green-100 underline-offset-4">1. French Vocabulary (A-Z)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 text-base font-semibold">
+                            <ol>
+                                <li>Ananas - Pineapple</li>
+                                <li>Bébé - Baby</li>
+                                <li>Canard - Duck</li>
+                                <li>Ecole - School</li>
+                                <li>Fille - Girl</li>
+                                <li>Garçon - Boy</li>
+                                <li>Hôpital - Hospital</li>
+                                <li>Igname - Yam</li>
+                                <li>Jupe - Skirt</li>
+                                <li>Kangourou - Kangaroo</li>
+                                <li>Lion - Lion</li>
+                                <li>Maison - House</li>
+                                <li>Natte - Mat</li>
+                            </ol>
+                            <ol start="14">
+                                <li>Orange - Orange</li>
+                                <li>Pomme - Apple</li>
+                                <li>Queue - Tail</li>
+                                <li>Radio - Radio</li>
+                                <li>Sac - Bag</li>
+                                <li>Table - Table</li>
+                                <li>Uniforme - Uniform</li>
+                                <li>Voiture - Car</li>
+                                <li>Wagon - Carriage</li>
+                                <li>Xylophone - Xylophone</li>
+                                <li>Yacht - Yacht</li>
+                                <li>Zèbre - Zebra</li>
+                            </ol>
+                        </div>
+                    </div>
 
-    <!-- Student Info -->
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 bg-green-50 p-6 rounded-xl border border-green-100">
-        <div class="w-full">
-            <label class="block text-xs font-black text-green-600 uppercase mb-1">Student's Name</label>
-            <input type="text" placeholder="Enter name..." class="w-full text-xl font-bold border-none bg-transparent placeholder-green-300">
-        </div>
-        <div id="scoreDisplay" class="hidden">
-            <div class="text-center bg-white px-6 py-2 rounded-full shadow-inner border border-green-200">
-                <span class="text-xs font-bold text-gray-400 block uppercase">Total Score</span>
-                <span id="finalScore" class="text-3xl font-black text-green-600">0</span> <span class="text-gray-400">/ 100</span>
-            </div>
-        </div>
-    </div>
+                    <!-- 2. Voici -->
+                    <div class="topic-box border-green-400">
+                        <h3 class="font-black text-green-800 text-sm uppercase mb-3">2. Voici (This is / Here is)</h3>
+                        <p class="mb-3">It is used to showcase any noun close to us.</p>
+                        <p class="text-xs font-black text-green-600 mb-2 uppercase tracking-widest italic">Examples:</p>
+                        <ol>
+                            <li>Voici le cahier (This is the book)</li>
+                            <li>Voici le lion (This is the lion)</li>
+                            <li>Voici le bébé (This is the baby)</li>
+                        </ol>
+                    </div>
 
-    <!-- Section A: General Objectives -->
-    <div class="mb-16">
-        <div class="bg-green-800 text-white px-6 py-2 inline-block rounded-r-full font-bold shadow-md mb-6 uppercase">Section A: General Objectives (40 Marks)</div>
-        <p class="text-xs text-gray-400 italic mb-6">Instructions: Choose the correct answer from the options provided.</p>
-        
-        <div class="space-y-10" id="general-objectives">
-            <!-- 20 Fresh questions from vocabulary list -->
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">1. What is the French word for <span class="text-green-700">Baby</span>?</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Garçon</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Bébé</button>
-                </div>
-            </div>
+                    <!-- 3. Voila -->
+                    <div class="topic-box border-blue-200">
+                        <h3 class="font-black text-blue-800 text-sm uppercase mb-3">3. Voilà (That is / There is)</h3>
+                        <p class="mb-3">It is used to present a person or an object that is far from you.</p>
+                        <p class="text-xs font-black text-blue-600 mb-2 uppercase tracking-widest italic">Examples:</p>
+                        <ol>
+                            <li>Voilà monsieur Taiwo (That is Mr Taiwo)</li>
+                            <li>Voilà le dindon (That is the turkey)</li>
+                        </ol>
+                    </div>
 
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">2. <span class="text-green-700">Hôpital</span> in English means:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Hospital</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) School</button>
                 </div>
-            </div>
 
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">3. <span class="text-green-700">Lion</span> is the French name for which animal?</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Zebra</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Lion</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">4. <span class="text-green-700">Orange</span> in French means:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Orange</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Apple</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">5. <span class="text-green-700">Natte</span> in English means:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Table</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Mat</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">6. <span class="text-green-700">Radio</span> in French is spelled:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Radio</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Radeo</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">7. <span class="text-green-700">Sac</span> means ________ in English.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Shoe</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Bag</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">8. <span class="text-green-700">Table</span> means ________ in English.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Table</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Chair</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">9. <span class="text-green-700">Uniforme</span> is the French word for:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Umbrella</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Uniform</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">10. <span class="text-green-700">Voiture</span> means ________ in English.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Car</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Carriage</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">11. <span class="text-green-700">Wagon</span> means ________ in English.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Yacht</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Carriage</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">12. <span class="text-green-700">Yacht</span> is spelled as ________ in French.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Yacht</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Yache</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">13. <span class="text-green-700">Zèbre</span> means:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Zebra</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Duck</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">14. <span class="text-green-700">Voici</span> is used for things that are:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Far from you</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Close to you</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">15. <span class="text-green-700">Voilà</span> means:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) That is / There is</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) This is / Here is</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">16. <span class="text-green-700">Deux</span> is the French number for:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) 2</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) 4</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">17. <span class="text-green-700">Cinq</span> is the French number for:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) 3</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) 5</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">18. <span class="text-green-700">Dix</span> is the French number for:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) 10</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) 6</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">19. <span class="text-green-700">Xylophone</span> starts with the letter:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Z</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) X</button>
-                </div>
-            </div>
-
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">20. What is the English of <span class="text-green-700">Queue</span>?</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Tail</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Hair</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section B: The Main Test -->
-    <div class="mb-16 bg-blue-50 p-8 rounded-3xl border-2 border-blue-100">
-        <div class="bg-blue-800 text-white px-6 py-2 inline-block rounded-r-full font-bold shadow-md mb-6 uppercase">Section B: The Main Test (30 Marks)</div>
-        <p class="text-xs text-blue-400 italic mb-6 uppercase tracking-widest">These are your specific primary questions.</p>
-        
-        <div class="space-y-10" id="main-test">
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">1. __________ means Pineapple in french</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Ananas</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) banene</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">2. _________ means duck in french</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) canard</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) banene</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">3. _________ means school in french</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) chat</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Ecole</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">4. House means _______ in French</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Drapeau</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Maison</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">5. Kangaroo means _______ in French</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Ecole</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Kangaourou</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">6. Fille means _______ in English</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Girl</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) House</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">7. Jupe means ________ in English</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Skirt</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) pen</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">8. Igname means _______ in English</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Maison</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Yam</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="b">
-                <p class="font-bold text-lg mb-4">9. Banana means _______ in French</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) stylo</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) banane</button>
-                </div>
-            </div>
-            <div class="question-block" data-correct="a">
-                <p class="font-bold text-lg mb-4">10. Garcon means _______ in English</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button class="option-btn" onclick="selectOption(this, 'a')">(a) Boy</button>
-                    <button class="option-btn" onclick="selectOption(this, 'b')">(b) Cat</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section C: Written -->
-    <div class="mb-12">
-        <div class="bg-green-800 text-white px-6 py-2 inline-block rounded-r-full font-bold shadow-md mb-6 uppercase">Section C: Written Assessment (20 Marks)</div>
-        
-        <!-- French Numbers Written -->
-        <div class="mb-10 bg-green-50 p-6 rounded-2xl border-2 border-green-200">
-            <h4 class="font-bold text-green-800 mb-4 uppercase text-sm">Task 1: Complete the Number Sequence</h4>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">1</span>
-                    <span class="font-bold">Un</span>
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">2</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="deux">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">3</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="trois">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">4</span>
-                    <span class="font-bold">Quatre</span>
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">5</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="cinq">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">6</span>
-                    <span class="font-bold">Six</span>
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">7</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="sept">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">8</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="huit">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">9</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="neuf">
-                </div>
-                <div class="bg-white p-3 rounded-lg border flex flex-col items-center">
-                    <span class="text-xs text-gray-400">10</span>
-                    <input type="text" class="w-full text-center font-bold" data-answer="dix">
-                </div>
+                <button onclick="switchTab('exam')" class="mt-10 w-full bg-green-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg hover:bg-green-700 transition">Start Practice Exam ➔</button>
             </div>
         </div>
 
-        <!-- Near/Far Grammar Written -->
-        <div class="bg-white border-2 border-green-100 p-6 rounded-2xl">
-            <h4 class="font-bold text-gray-700 mb-4 uppercase text-sm">Task 2: Use "Voici" or "Voilà"</h4>
-            <div class="space-y-4">
-                <div class="flex items-center gap-2">
-                    <span>(Close to us) _________ le cahier.</span>
-                    <input type="text" class="w-24 border-none font-bold text-green-700" data-answer="voici">
-                </div>
-                <div class="flex items-center gap-2">
-                    <span>(Far from us) _________ monsieur Taiwo.</span>
-                    <input type="text" class="w-24 border-none font-bold text-green-700" data-answer="voilà">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section D: Oral -->
-    <div class="bg-gray-50 p-6 rounded-2xl border-2 border-dashed border-gray-300">
-        <h3 class="font-bold text-gray-700 mb-2 uppercase">Section D: Oral Practical (10 Marks)</h3>
-        <p class="text-xs text-gray-500 mb-4">Read these words aloud to your teacher/parent:</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div class="p-3 bg-white rounded-lg border font-bold">Xylophone</div>
-            <div class="p-3 bg-white rounded-lg border font-bold">Hôpital</div>
-            <div class="p-3 bg-white rounded-lg border font-bold">Wagon</div>
-            <div class="p-3 bg-white rounded-lg border font-bold">Pomme</div>
-        </div>
-    </div>
-
-    <!-- Final Submission -->
-    <div class="no-print mt-12 text-center">
-        <button onclick="submitExam()" class="bg-green-600 text-white px-12 py-4 rounded-2xl font-black text-xl hover:bg-green-700 transition shadow-xl transform hover:scale-105 active:scale-95">
-            Submit and Get Results 🚀
-        </button>
-    </div>
-
-    <!-- Result Banner -->
-    <div id="resultsBanner" class="hidden mt-8 p-10 bg-green-600 text-white rounded-3xl text-center shadow-2xl animate-bounce">
-        <h2 class="text-4xl font-black mb-2">Excellent Travail! 🌟</h2>
-        <p class="text-green-100 text-lg">You have completed the exam.</p>
-        <div class="mt-4 text-sm bg-green-700 inline-block px-4 py-2 rounded-full font-bold">Check your corrections below.</div>
-    </div>
-</div>
-
-<script>
-    function selectOption(button, value) {
-        const parent = button.closest('.question-block');
-        const buttons = parent.querySelectorAll('.option-btn');
-        
-        buttons.forEach(btn => btn.classList.remove('selected'));
-        button.classList.add('selected');
-        parent.dataset.userChoice = value;
-    }
-
-    function submitExam() {
-        let totalScore = 0;
-        
-        // Grade Gen Objectives (Section A: 20 questions * 2 = 40 marks)
-        const genObj = document.querySelectorAll('#general-objectives .question-block');
-        genObj.forEach(q => {
-            const correct = q.dataset.correct;
-            const chosen = q.dataset.userChoice;
-            const buttons = q.querySelectorAll('.option-btn');
+        <!-- PRACTICE EXAM SECTION -->
+        <div id="examSection" class="exam-text">
             
-            buttons.forEach(btn => {
-                btn.classList.remove('correct', 'incorrect');
-                if (btn.innerText.toLowerCase().startsWith('(' + correct + ')')) btn.classList.add('correct');
-                if (chosen && btn.innerText.toLowerCase().startsWith('(' + chosen + ')') && chosen !== correct) btn.classList.add('incorrect');
-            });
-            if (chosen === correct) totalScore += 2;
-        });
+            <!-- Objective Section A -->
+            <div class="mb-12">
+                <div class="bg-green-700 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm tracking-widest">Section A: Objectives</div>
+                <div id="objContainer" class="space-y-6"></div>
+            </div>
 
-        // Grade Main Test (Section B: 10 questions * 3 = 30 marks)
-        const mainTest = document.querySelectorAll('#main-test .question-block');
-        mainTest.forEach(q => {
-            const correct = q.dataset.correct;
-            const chosen = q.dataset.userChoice;
-            const buttons = q.querySelectorAll('.option-btn');
+            <!-- Main Test Section B -->
+            <div class="mb-12">
+                <div class="bg-green-900 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm tracking-widest">Section B: Main Test</div>
+                <div id="mainTestContainer" class="space-y-6"></div>
+            </div>
+
+            <!-- Written Section C -->
+            <div class="mb-12">
+                <div class="bg-gray-800 text-white px-4 py-1 inline-block rounded-t-lg font-bold text-xs mb-4 uppercase shadow-sm">Section C: Written Assessment</div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-8">
+                    
+                    <div>
+                        <p class="font-bold mb-4">1. Complete the Number Sequence:</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                            <div class="bg-gray-50 p-2 rounded text-center"><span class="text-[10px] block">1</span>Un</div>
+                            <div class="bg-gray-50 p-2 rounded text-center"><span class="text-[10px] block">2</span><input type="text" class="gap-input w-full" data-answer="deux" onchange="checkGap(this)"></div>
+                            <div class="bg-gray-50 p-2 rounded text-center"><span class="text-[10px] block">3</span><input type="text" class="gap-input w-full" data-answer="trois" onchange="checkGap(this)"></div>
+                            <div class="bg-gray-50 p-2 rounded text-center"><span class="text-[10px] block">4</span>Quatre</div>
+                            <div class="bg-gray-50 p-2 rounded text-center"><span class="text-[10px] block">5</span><input type="text" class="gap-input w-full" data-answer="cinq" onchange="checkGap(this)"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="font-bold mb-4">2. Use "Voici" or "Voilà":</p>
+                        <div class="space-y-4">
+                            <div>(Close to us) <input type="text" class="gap-input w-24" data-answer="voici" onchange="checkGap(this)"> le cahier.</div>
+                            <div>(Far from us) <input type="text" class="gap-input w-24" data-answer="voila" onchange="checkGap(this)"> monsieur Taiwo.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            buttons.forEach(btn => {
-                btn.classList.remove('correct', 'incorrect');
-                if (btn.innerText.toLowerCase().startsWith('(' + correct + ')')) btn.classList.add('correct');
-                if (chosen && btn.innerText.toLowerCase().startsWith('(' + chosen + ')') && chosen !== correct) btn.classList.add('incorrect');
-            });
-            if (chosen === correct) totalScore += 3;
-        });
+            <!-- Oral Section D -->
+            <div class="mb-12 bg-green-50 p-6 rounded-2xl border-2 border-dashed border-green-200 text-center">
+                <h3 class="font-bold text-green-800 mb-2 uppercase">Section D: Oral Practical</h3>
+                <p class="text-xs text-green-600 mb-4">Read aloud to parent: Hôpital, Xylophone, Wagon, Pomme.</p>
+            </div>
 
-        // Grade Written (Section C: Distributed marks for total 20)
-        const writtenInputs = document.querySelectorAll('input[data-answer]');
-        writtenInputs.forEach(input => {
-            const val = input.value.trim().toLowerCase();
-            const ans = input.dataset.answer.toLowerCase();
-            input.classList.remove('text-green-600', 'text-red-600', 'font-black');
-            if (val === ans) {
-                input.classList.add('text-green-600', 'font-black');
-                totalScore += 2; 
-            } else if (val !== "") {
-                input.classList.add('text-red-600', 'font-black');
+            <div class="pt-10">
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-black uppercase text-xs hover:bg-gray-300 transition">Finish & Reset Exam 🔄</button>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">
+            © 2026 SmartRevision Hub | Lagos, Nigeria
+        </footer>
+    </div>
+
+    <script>
+        const objQuestions = [
+            { q: "What is the French word for Baby?", options: ["Garçon", "Bébé"], correct: 1, note: "Bébé means Baby in French." },
+            { q: "Hôpital in English means:", options: ["Hospital", "School"], correct: 0, note: "Hôpital is the French word for Hospital." },
+            { q: "Lion is the French name for which animal?", options: ["Zebra", "Lion"], correct: 1, note: "Lion is the same in both English and French!" },
+            { q: "Natte in English means:", options: ["Table", "Mat"], correct: 1, note: "Natte means a sleeping or floor mat." },
+            { q: "Sac means ________ in English.", options: ["Shoe", "Bag"], correct: 1, note: "Sac is used for carrying books or items (Bag)." }
+        ];
+
+        const mainTestQuestions = [
+            { q: "__________ means Pineapple in French", options: ["Ananas", "Banane"], correct: 0, note: "Ananas is Pineapple." },
+            { q: "_________ means School in French", options: ["Chat", "Ecole"], correct: 1, note: "Ecole is the place where we learn." },
+            { q: "House means _______ in French", options: ["Drapeau", "Maison"], correct: 1, note: "Maison is the French word for House." },
+            { q: "Garçon means _______ in English", options: ["Boy", "Cat"], correct: 0, note: "Garçon is Boy, and Fille is Girl." },
+            { q: "Banana means _______ in French", options: ["Stylo", "Banane"], correct: 1, note: "Banane is very similar to the English word." }
+        ];
+
+        let examStarted = false;
+
+        function switchTab(mode) {
+            if (mode === 'study' && examStarted) {
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('animate-bounce');
+                setTimeout(() => btn.classList.remove('animate-bounce'), 500);
+                return;
             }
-        });
+            const studySec = document.getElementById('studySection');
+            const examSec = document.getElementById('examSection');
+            if (mode === 'study') {
+                studySec.classList.remove('hidden'); examSec.classList.add('hidden');
+                document.getElementById('studyTabBtn').classList.add('tab-active');
+                document.getElementById('examTabBtn').classList.remove('tab-active');
+            } else {
+                studySec.classList.add('hidden'); examSec.classList.remove('hidden');
+                document.getElementById('examTabBtn').classList.add('tab-active');
+                document.getElementById('studyTabBtn').classList.remove('tab-active');
+            }
+            window.scrollTo(0,0);
+        }
 
-        // Add 10 marks for oral participation
-        totalScore += 10;
+        function lockNotes() {
+            if (!examStarted) {
+                examStarted = true;
+                const btn = document.getElementById('studyTabBtn');
+                btn.classList.add('tab-locked');
+                document.getElementById('lockIcon').classList.remove('hidden');
+            }
+        }
 
-        const finalScore = Math.min(Math.round(totalScore), 100);
-        document.getElementById('finalScore').innerText = finalScore;
-        document.getElementById('scoreDisplay').classList.remove('hidden');
-        document.getElementById('resultsBanner').classList.remove('hidden');
-        
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+        function renderQuiz(data, containerId, prefix) {
+            const container = document.getElementById(containerId);
+            data.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-6 rounded-2xl shadow-sm border border-green-50";
+                div.innerHTML = `
+                    <h3 class="font-bold text-gray-800 mb-4">${index + 1}. ${item.q}</h3>
+                    <div class="space-y-2">${item.options.map((opt, i) => `<button class="option-btn" onclick="checkAnswer(this, '${prefix}', ${index}, ${i})">${opt}</button>`).join('')}</div>
+                    <div id="${prefix}-note-${index}" class="explanation"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-    function resetExam() {
-        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected', 'correct', 'incorrect'));
-        document.querySelectorAll('.question-block').forEach(q => delete q.dataset.userChoice);
-        document.querySelectorAll('input').forEach(input => {
-            input.value = "";
-            input.classList.remove('text-green-600', 'text-red-600', 'font-black');
-        });
-        document.getElementById('scoreDisplay').classList.add('hidden');
-        document.getElementById('resultsBanner').classList.add('hidden');
-    }
-</script>
+        window.checkAnswer = function(btn, prefix, qIdx, optIdx) {
+            lockNotes();
+            const data = (prefix === 'obj') ? objQuestions : mainTestQuestions;
+            const buttons = btn.parentElement.querySelectorAll('button');
+            const noteDiv = document.getElementById(`${prefix}-note-${qIdx}`);
+            buttons.forEach(b => b.disabled = true);
+            if (optIdx === data[qIdx].correct) {
+                btn.classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-green-700 uppercase text-xs">✔ Très Bien!</span><br>${data[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-green-50');
+            } else {
+                btn.classList.add('wrong');
+                buttons[data[qIdx].correct].classList.add('correct');
+                noteDiv.innerHTML = `<span class="font-bold text-red-700 uppercase text-xs">✘ Essayez encore:</span><br>${data[qIdx].note}`;
+                noteDiv.classList.add('active-explanation', 'bg-red-50');
+            }
+        };
 
+        window.checkGap = function(input) {
+            lockNotes();
+            const correctAns = input.dataset.answer.toLowerCase();
+            const userAns = input.value.trim().toLowerCase();
+            if (userAns === correctAns) {
+                input.style.color = "#10b981";
+                input.style.borderColor = "#10b981";
+            } else if (userAns !== "") {
+                input.style.color = "#ef4444";
+                input.style.borderColor = "#ef4444";
+            }
+        };
+
+        renderQuiz(objQuestions, 'objContainer', 'obj');
+        renderQuiz(mainTestQuestions, 'mainTestContainer', 'main');
+    </script>
 </body>
-    <!-- Footer -->
-    <footer class="text-center py-10 text-gray-400 text-sm border-t border-gray-100 mt-12">
-        <p>© 2026 SmartRevision Hub | Built for Excellence by Mutiah/p>
-    </footer>
 </html>
